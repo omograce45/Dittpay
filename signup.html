@@ -41,7 +41,7 @@
         return;
       }
       try {
-        const res = await fetch('https://dit-pay.onrender.com/api/users/register', {
+        const res = await fetch('https://dit-pay.onrender.com/api/users/signup', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ fullname, email, phone, password })
