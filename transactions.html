@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>DitPay - Transactions</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>DitPay Transactions</h1>
+    <nav>
+      <a href="dashboard.html">Home</a>
+      <a href="transactions.html">Transactions</a>
+      <a href="profile.html">Profile</a>
+      <a href="index.html" onclick="logout()">Logout</a>
+    </nav>
+  </header>
+
+  <div class="container">
+    <h2>Your Transactions</h2>
+    <table border="1" width="100%">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Type</th>
+          <th>Amount</th>
+          <th>Status</th>
+          <th>Date</th>
+        </tr>
+      </thead>
+      <tbody id="transactionList">
+        <tr><td colspan="5">Loading...</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Add New Transaction</h3>
+    <form id="transactionForm">
+      <label for="type">Type:</label>
+      <select id="type" required>
+        <option value="deposit">Deposit</option>
+        <option value="withdrawal">Withdrawal</option>
+      </select>
+
+      <label for="amount">Amount:</label>
+      <input type="number" id="amount" required />
+
+      <button type="submit">Add Transaction</button>
+    </form>
+  </div>
+
+  <footer><p>&copy; 2025 DitPay. All Rights Reserved.</p></footer>
+
+  <script>
+    function logout() {
+      localStorage.removeItem("token");
+      window.location.href = "index.html";
+    }
+
+    async function loadTransactions() {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        alert("No token found. Please log in.");
+        window.location.href = "index.html";
+        return;
+      }
+
+      try {
+        const res = await fetch("https://dit-pay.onrender.com/transactions", {
+          headers: { "Authorization": "Bearer " + token }
+        });
+
+        const list = document.getElementById("transactionList");
+        list.innerHTML = "";
+
+        if (res.ok) {
+          const data = await res.json();
+          if (data.length === 0) {
+            list.innerHTML = "<tr><td colspan='5'>No transactions found.</td></tr>";
+          } else {
+            data.forEach(tx => {
+              list.innerHTML += `
+                <tr>
+                  <td>${tx.id}</td>
+                  <td>${tx.type}</td>
+                  <td>${tx.amount}</td>
+                  <td>${tx.status}</td>
+                  <td>${new Date(tx.created_at).toLocaleString()}</td>
+                </tr>
+              `;
+            });
+          }
+        } else {
+          list.innerHTML = "<tr><td colspan='5'>Failed to load transactions</td></tr>";
+        }
+      } catch (err) {
+        console.error("Error loading transactions:", err);
+        alert("Error loading transactions.");
+      }
+    }
+
+    document.getElementById("transactionForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const token = localStorage.getItem("token");
+      const type = document.getElementById("type").value;
+      const amount = document.getElementById("amount").value;
+
+      try {
+        const res = await fetch("https://dit-pay.onrender.com/transactions", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + token
+          },
+          body: JSON.stringify({ type, amount })
+        });
+
+        const data = await res.json();
+        alert(data.message);
+
+        if (res.ok) {
+          document.getElementById("transactionForm").reset();
+          loadTransactions(); // refresh list
+        }
+      } catch (err) {
+        alert("Error creating transaction.");
+        console.error(err);
+      }
+    });
+
+    // Load transactions on page load
+    loadTransactions();
+  </script>
+</body>
+</html>
