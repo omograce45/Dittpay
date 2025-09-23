@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DitPay - Buy Airtime</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>Buy Airtime</h1>
+    <nav>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="wallet.html">Wallet</a>
+      <a href="transactions.html">Transactions</a>
+      <a href="profile.html">Profile</a>
+    </nav>
+  </header>
+
+  <div class="container">
+    <h2>Airtime Purchase</h2>
+    <form id="airtimeForm">
+      <label for="network">Select Network</label>
+      <select id="network" required>
+        <option value="">-- Select Network --</option>
+        <option value="mtn">MTN</option>
+        <option value="airtel">Airtel</option>
+        <option value="glo">Glo</option>
+        <option value="9mobile">9mobile</option>
+      </select>
+
+      <label for="phone">Phone Number</label>
+      <input type="tel" id="phone" placeholder="e.g. 08012345678" required />
+
+      <label for="amount">Amount (₦)</label>
+      <input type="number" id="amount" placeholder="100" required />
+
+      <button type="submit">Buy Airtime</button>
+    </form>
+  </div>
+
+  <footer><p>&copy; 2025 DitPay. All Rights Reserved.</p></footer>
+
+  <script>
+    document.getElementById("airtimeForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const token = localStorage.getItem("token");
+      if (!token) {
+        alert("You must login first!");
+        return window.location.href = "login.html";
+      }
+
+      const network = document.getElementById("network").value;
+      const phone = document.getElementById("phone").value;
+      const amount = document.getElementById("amount").value;
+
+      try {
+        const res = await fetch("https://dit-pay.onrender.com/buy-airtime", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + token
+          },
+          body: JSON.stringify({ network, phone, amount })
+        });
+
+        const data = await res.json();
+        if (res.ok) {
+          alert("✅ Airtime purchase request sent successfully!");
+          console.log("VTPass Response:", data.vtpass);
+        } else {
+          alert("❌ " + data.message);
+        }
+      } catch (err) {
+        console.error(err);
+        alert("Error connecting to server.");
+      }
+    });
+  </script>
+</body>
+</html>
