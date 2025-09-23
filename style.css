@@ -1,17 +1,21 @@
-/* --- Existing styles --- */
+/* --- Base styles --- */
 body {
   font-family: Arial, sans-serif;
   background: #f4f4f9;
   margin: 0;
   padding: 0;
+  display: flex;             /* make body a flex container */
+  flex-direction: column;
+  min-height: 100vh;         /* full viewport height */
 }
 
+/* --- Header --- */
 header {
   background: #2c3e50;
   color: white;
   padding: 15px 30px;
   display: flex;
-  flex-wrap: wrap;       /* allow wrapping on small screens */
+  flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
 }
@@ -23,7 +27,7 @@ header {
 }
 
 .logo {
-  height: 45px; /* adjust size of logo */
+  height: 45px;
 }
 
 h1 {
@@ -32,9 +36,10 @@ h1 {
   color: white;
 }
 
+/* --- Navigation --- */
 nav {
-  display: flex;
-  flex-direction: row;   /* horizontal layout */
+  display: flex;              /* always visible */
+  flex-direction: row;
   gap: 15px;
   margin-top: 0;
 }
@@ -52,7 +57,11 @@ nav a:hover {
   border-radius: 5px;
 }
 
-/* --- Other existing styles --- */
+/* --- Main content --- */
+main.content {
+  flex: 1;                    /* takes all remaining space */
+}
+
 .container {
   max-width: 400px;
   margin: 50px auto;
@@ -91,12 +100,14 @@ button {
   border-radius: 5px;
   cursor: pointer;
   font-size: 16px;
+  margin-top: 10px;
 }
 
 button:hover {
   background: #16a085;
 }
 
+/* --- Welcome and services --- */
 .welcome {
   text-align: center;
   padding: 20px;
@@ -123,18 +134,19 @@ button:hover {
   box-shadow: 0 6px 10px rgba(0,0,0,0.15);
 }
 
+/* --- Footer --- */
 footer {
   background: #2c3e50;
   color: white;
   text-align: center;
   padding: 10px;
-  margin-top: 30px;
+  /* remove margin-top */
 }
 
 /* --- Responsive adjustments --- */
 @media (max-width: 480px) {
   header {
-    flex-direction: column;   /* stack logo and nav on small screens */
+    flex-direction: column;
     align-items: flex-start;
   }
 
@@ -148,4 +160,4 @@ footer {
     padding: 5px 8px;
     font-size: 14px;
   }
-}
+    }
