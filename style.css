@@ -22,7 +22,7 @@ header {
 }
 
 .logo {
-  height:45px; /* adjust size of logo */
+  height:45px;
 }
 
 .container {
@@ -143,12 +143,13 @@ nav.active {
 /* Desktop styles */
 @media (min-width: 768px) {
   .menu-toggle {
-    display: none;
+    display: none; /* hide hamburger */
   }
+
   nav {
-    display: flex !important;
+    display: flex; /* always show nav */
     flex-direction: row;
     gap: 15px;
     margin-top: 0;
   }
-  }
+}
