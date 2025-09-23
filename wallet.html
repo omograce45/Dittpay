@@ -1,66 +1,78 @@
-<!DOCTYPE html>  <html lang="en">  
-<head>  
-  <meta charset="utf-8" />  
-  <meta name="viewport" content="width=device-width, initial-scale=1" />  
-  <title>DitPay - Wallet</title>  
-  <link rel="stylesheet" href="style.css" />  
-</head>  
-<body>  
-  <header>  
-    <h1>DitPay Wallet</h1>  
-    <nav>  
-      <a href="dashboard.html">Home</a>  
-      <a href="wallet.html">Wallet</a>  
-      <a href="transactions.html">Transactions</a>  
-      <a href="profile.html">Profile</a>  </nav>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>DitPay - Wallet</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>DitPay Wallet</h1>
+    <nav>
+      <a href="dashboard.html">Home</a>
+      <a href="wallet.html">Wallet</a>
+      <a href="transactions.html">Transactions</a>
+      <a href="profile.html">Profile</a>
+    </nav>
+  </header>
 
-  </header>    <div class="container">  
-    <h2>Your Wallet</h2>  
-    <p><strong>Balance:</strong> ₦<span id="balance">0.00</span></p>  
-    <button onclick="fundWallet()">💳 Fund Wallet</button>  
-    <button onclick="loadWallet()">🔄 Refresh Balance</button>  
-  </div>    <footer><p>&copy; 2025 DitPay. All Rights Reserved.</p></footer>    <script>  
-    async function loadWallet() {  
-      try {  
-        const res = await fetch("https://dit-pay.onrender.com/wallet", {  
-          headers: { "Authorization": "Bearer " + localStorage.getItem("token") }  
-        });  
-        if (res.ok) {  
-          const data = await res.json();  
-          document.getElementById("balance").innerText = data.balance;  
-        } else {  
-          alert("Unable to fetch wallet balance.");  
-        }  
-      } catch (err) {  
-        alert("Error loading wallet.");  
-      }  
-    }  
-  
-    async function fundWallet() {  
-      const amount = prompt("Enter amount to fund (₦):");  
-      if (!amount) return;  
-  
-      try {  
-        const res = await fetch("https://dit-pay.onrender.com/wallet/fund", {  
-          method: "POST",  
-          headers: {  
-            "Content-Type": "application/json",  
-            "Authorization": "Bearer " + localStorage.getItem("token")  
-          },  
-          body: JSON.stringify({ amount: parseFloat(amount) })  
-        });  
-  
-        const data = await res.json();  
-        alert(data.message);  
-        if (res.ok) {  
-          loadWallet();  
-        }  
-      } catch (err) {  
-        alert("Error funding wallet.");  
-      }  
-    }  
-  
-    // Load wallet on page load  
-    loadWallet();  
-  </script>  </body>  
+  <!-- Main content wrapped in <main> -->
+  <main class="content">
+    <div class="container">
+      <h2>Your Wallet</h2>
+      <p><strong>Balance:</strong> ₦<span id="balance">0.00</span></p>
+      <button onclick="fundWallet()">💳 Fund Wallet</button>
+      <button onclick="loadWallet()">🔄 Refresh Balance</button>
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 DitPay. All Rights Reserved.</p>
+  </footer>
+
+  <script>
+    async function loadWallet() {
+      try {
+        const res = await fetch("https://dit-pay.onrender.com/wallet", {
+          headers: { "Authorization": "Bearer " + localStorage.getItem("token") }
+        });
+        if (res.ok) {
+          const data = await res.json();
+          document.getElementById("balance").innerText = data.balance;
+        } else {
+          alert("Unable to fetch wallet balance.");
+        }
+      } catch (err) {
+        alert("Error loading wallet.");
+      }
+    }
+
+    async function fundWallet() {
+      const amount = prompt("Enter amount to fund (₦):");
+      if (!amount) return;
+
+      try {
+        const res = await fetch("https://dit-pay.onrender.com/wallet/fund", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + localStorage.getItem("token")
+          },
+          body: JSON.stringify({ amount: parseFloat(amount) })
+        });
+
+        const data = await res.json();
+        alert(data.message);
+        if (res.ok) {
+          loadWallet();
+        }
+      } catch (err) {
+        alert("Error funding wallet.");
+      }
+    }
+
+    loadWallet();
+  </script>
+</body>
 </html>
