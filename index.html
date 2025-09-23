@@ -7,7 +7,22 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <header><h1>DitPay</h1></header>
+  <header>
+    <div class="logo-title">
+      <h1>DitPay</h1>
+    </div>
+
+    <!-- Hamburger menu toggle for mobile -->
+    <div class="menu-toggle">☰</div>
+
+    <!-- Navigation links -->
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="login.html">Login</a>
+      <a href="signup.html">Signup</a>
+    </nav>
+  </header>
+
   <div class="container">
     <h2>Login to Your Account</h2>
     <form id="loginForm">
@@ -27,6 +42,7 @@
   </div>
 
   <script>
+    // Login form
     document.getElementById('loginForm').addEventListener('submit', async function(e){
       e.preventDefault();
 
@@ -41,22 +57,26 @@
         });
 
         const data = await res.json();
-        alert(data.message); // show backend response
+        alert(data.message);
 
         if (res.ok && data.token) {
-          // ✅ Save JWT token
           localStorage.setItem('token', data.token);
-          
-          // ✅ Redirect to dashboard
           window.location.href = 'dashboard.html';
         } else {
-          // handle invalid credentials or errors
           console.error("Login failed:", data);
         }
       } catch (err) {
         alert('❌ Error connecting to server.');
         console.error("Login request error:", err);
       }
+    });
+
+    // Hamburger menu toggle
+    const menuToggle = document.querySelector('.menu-toggle');
+    const nav = document.querySelector('nav');
+
+    menuToggle.addEventListener('click', () => {
+      nav.classList.toggle('active');
     });
   </script>
 </body>
