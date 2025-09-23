@@ -1,15 +1,120 @@
-body {font-family: Arial, sans-serif;background:#f4f4f9;margin:0;padding:0;}
-header {background:#2c3e50;color:white;text-align:center;padding:15px;}
-.container {max-width:400px;margin:50px auto;background:white;padding:30px;border-radius:10px;box-shadow:0 4px 6px rgba(0,0,0,0.1);}
-h2 {text-align:center;color:#2c3e50;}
-label {display:block;margin-bottom:5px;font-weight:bold;color:#333;}
-input {width:100%;padding:10px;margin-bottom:15px;border:1px solid #ccc;border-radius:5px;}
-button {width:100%;padding:12px;background:#1abc9c;color:white;border:none;border-radius:5px;cursor:pointer;font-size:16px;}
-button:hover {background:#16a085;}
-nav a {color:white;margin:0 10px;text-decoration:none;}
-nav a:hover {color:#1abc9c;}
-.welcome {text-align:center;padding:20px;}
-.services {display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px;padding:20px;}
-.card {background:white;padding:20px;border-radius:10px;text-align:center;box-shadow:0 4px 6px rgba(0,0,0,0.1);transition:0.3s;}
-.card:hover {transform:translateY(-5px);box-shadow:0 6px 10px rgba(0,0,0,0.15);}
-footer {background:#2c3e50;color:white;text-align:center;padding:10px;margin-top:30px;}
+body {
+  font-family: Arial, sans-serif;
+  background:#f4f4f9;
+  margin:0;
+  padding:0;
+}
+
+header {
+  background:#2c3e50;
+  color:white;
+  padding:15px 30px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.logo-title {
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.logo {
+  height:45px; /* adjust size of logo */
+}
+
+.container {
+  max-width:400px;
+  margin:50px auto;
+  background:white;
+  padding:30px;
+  border-radius:10px;
+  box-shadow:0 4px 6px rgba(0,0,0,0.1);
+}
+
+h1 {
+  font-size:20px;
+  margin:0;
+  color:white;
+}
+
+h2 {
+  text-align:center;
+  color:#2c3e50;
+}
+
+label {
+  display:block;
+  margin-bottom:5px;
+  font-weight:bold;
+  color:#333;
+}
+
+input {
+  width:100%;
+  padding:10px;
+  margin-bottom:15px;
+  border:1px solid #ccc;
+  border-radius:5px;
+}
+
+button {
+  width:100%;
+  padding:12px;
+  background:#1abc9c;
+  color:white;
+  border:none;
+  border-radius:5px;
+  cursor:pointer;
+  font-size:16px;
+}
+
+button:hover {
+  background:#16a085;
+}
+
+nav a {
+  color:white;
+  margin:0 10px;
+  text-decoration:none;
+  font-weight:500;
+}
+
+nav a:hover {
+  color:#1abc9c;
+}
+
+.welcome {
+  text-align:center;
+  padding:20px;
+}
+
+.services {
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:20px;
+  padding:20px;
+}
+
+.card {
+  background:white;
+  padding:20px;
+  border-radius:10px;
+  text-align:center;
+  box-shadow:0 4px 6px rgba(0,0,0,0.1);
+  transition:0.3s;
+}
+
+.card:hover {
+  transform:translateY(-5px);
+  box-shadow:0 6px 10px rgba(0,0,0,0.15);
+}
+
+footer {
+  background:#2c3e50;
+  color:white;
+  text-align:center;
+  padding:10px;
+  margin-top:30px;
+}
