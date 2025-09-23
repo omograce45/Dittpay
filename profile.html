@@ -1,68 +1,74 @@
-<!DOCTYPE html>  <html lang="en">  
-<head>  
-  <meta charset="utf-8" />  
-  <meta name="viewport" content="width=device-width,initial-scale=1" />  
-  <title>DitPay - Profile</title>  
-  <link rel="stylesheet" href="style.css" />  
-</head>  
-<body>  
-  <header>  
-    <h1>DitPay Profile</h1>  
-    <nav>  
-      <a href="dashboard.html">Home</a>  
-      <a href="wallet.html">Wallet</a>  
-      <a href="transactions.html">Transactions</a>  
-      <a href="profile.html">Profile</a>  
-    </nav>  
-  </header>    <div class="container">  
-    <h2>Your Profile</h2>  
-    <p id="name"><strong>Name:</strong> Loading...</p>  
-    <p id="email"><strong>Email:</strong> Loading...</p>  
-    <p id="phone"><strong>Phone:</strong> Loading...</p>  
-    <button onclick="window.location.href='dashboard.html'">Back to Dashboard</button>  
-  </div>    <footer>  
-    <p>&copy; 2025 DitPay. All Rights Reserved.</p>  
-  </footer>    <script>  
-    // ✅ Logout function  
-    function logout() {  
-      localStorage.removeItem("token");  
-      window.location.href = "index.html";  
-    }  
-  
-    // ✅ Load profile data  
-    async function loadProfile() {  
-      try {  
-        const token = localStorage.getItem("token");  
-        if (!token) {  
-          alert("No token found. Please log in again.");  
-          window.location.href = "index.html";  
-          return;  
-        }  
-  
-        const res = await fetch("https://dit-pay.onrender.com/profile", {  
-          headers: {  
-            "Authorization": "Bearer " + token  
-          }  
-        });  
-  
-        if (res.ok) {  
-          const data = await res.json();  
-          document.getElementById("name").innerHTML = "<strong>Name:</strong> " + (data.name || "N/A");  
-          document.getElementById("email").innerHTML = "<strong>Email:</strong> " + (data.email || "N/A");  
-          document.getElementById("phone").innerHTML = "<strong>Phone:</strong> " + (data.phone || "N/A");  
-        } else if (res.status === 401 || res.status === 403) {  
-          alert("Session expired. Please log in again.");  
-          logout();  
-        } else {  
-          alert("Unable to fetch profile data.");  
-        }  
-      } catch (err) {  
-        console.error("Profile fetch error:", err);  
-        alert("Error loading profile.");  
-      }  
-    }  
-  
-    // ✅ Call when page loads  
-    loadProfile();  
-  </script>  </body>  
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>DitPay - Profile</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>DitPay Profile</h1>
+    <nav>
+      <a href="dashboard.html">Home</a>
+      <a href="wallet.html">Wallet</a>
+      <a href="transactions.html">Transactions</a>
+      <a href="profile.html">Profile</a>
+    </nav>
+  </header>
+
+  <!-- Main content wrapper -->
+  <main class="content">
+    <div class="container">
+      <h2>Your Profile</h2>
+      <p id="name"><strong>Name:</strong> Loading...</p>
+      <p id="email"><strong>Email:</strong> Loading...</p>
+      <p id="phone"><strong>Phone:</strong> Loading...</p>
+      <button onclick="window.location.href='dashboard.html'">Back to Dashboard</button>
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 DitPay. All Rights Reserved.</p>
+  </footer>
+
+  <script>
+    function logout() {
+      localStorage.removeItem("token");
+      window.location.href = "index.html";
+    }
+
+    async function loadProfile() {
+      try {
+        const token = localStorage.getItem("token");
+        if (!token) {
+          alert("No token found. Please log in again.");
+          window.location.href = "index.html";
+          return;
+        }
+
+        const res = await fetch("https://dit-pay.onrender.com/profile", {
+          headers: { "Authorization": "Bearer " + token }
+        });
+
+        if (res.ok) {
+          const data = await res.json();
+          document.getElementById("name").innerHTML = "<strong>Name:</strong> " + (data.name || "N/A");
+          document.getElementById("email").innerHTML = "<strong>Email:</strong> " + (data.email || "N/A");
+          document.getElementById("phone").innerHTML = "<strong>Phone:</strong> " + (data.phone || "N/A");
+        } else if (res.status === 401 || res.status === 403) {
+          alert("Session expired. Please log in again.");
+          logout();
+        } else {
+          alert("Unable to fetch profile data.");
+        }
+      } catch (err) {
+        console.error("Profile fetch error:", err);
+        alert("Error loading profile.");
+      }
+    }
+
+    loadProfile();
+  </script>
+</body>
 </html>
