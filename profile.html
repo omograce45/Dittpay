@@ -13,7 +13,7 @@
       <a href="dashboard.html">Home</a>
       <a href="#">Transactions</a>
       <a href="profile.html">Profile</a>
-      <a href="index.html">Logout</a>
+      <a href="index.html" onclick="logout()">Logout</a>
     </nav>
   </header>
 
@@ -25,25 +25,52 @@
     <button onclick="window.location.href='dashboard.html'">Back to Dashboard</button>
   </div>
 
-  <footer><p>&copy; 2025 DitPay. All Rights Reserved.</p></footer>
+  <footer>
+    <p>&copy; 2025 DitPay. All Rights Reserved.</p>
+  </footer>
 
   <script>
+    // ✅ Logout function
+    function logout() {
+      localStorage.removeItem("token");
+      window.location.href = "index.html";
+    }
+
+    // ✅ Load profile data
     async function loadProfile() {
       try {
-        const res = await fetch('https://dit-pay.onrender.com/profile');
+        const token = localStorage.getItem("token");
+        if (!token) {
+          alert("No token found. Please log in again.");
+          window.location.href = "index.html";
+          return;
+        }
+
+        const res = await fetch("https://dit-pay.onrender.com/profile", {
+          headers: {
+            "Authorization": "Bearer " + token
+          }
+        });
+
         if (res.ok) {
           const data = await res.json();
-          document.getElementById('name').innerHTML = '<strong>Name:</strong> ' + (data.name || 'N/A');
-          document.getElementById('email').innerHTML = '<strong>Email:</strong> ' + (data.email || 'N/A');
-          document.getElementById('phone').innerHTML = '<strong>Phone:</strong> ' + (data.phone || 'N/A');
+          document.getElementById("name").innerHTML = "<strong>Name:</strong> " + (data.name || "N/A");
+          document.getElementById("email").innerHTML = "<strong>Email:</strong> " + (data.email || "N/A");
+          document.getElementById("phone").innerHTML = "<strong>Phone:</strong> " + (data.phone || "N/A");
+        } else if (res.status === 401 || res.status === 403) {
+          alert("Session expired. Please log in again.");
+          logout();
         } else {
-          alert('Unable to fetch profile data.');
+          alert("Unable to fetch profile data.");
         }
       } catch (err) {
-        alert('Error loading profile.');
+        console.error("Profile fetch error:", err);
+        alert("Error loading profile.");
       }
     }
+
+    // ✅ Call when page loads
     loadProfile();
   </script>
 </body>
-</html>
+  </html>
