@@ -1,69 +1,75 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>DitPay - Dashboard</title>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <!-- Header with navigation -->
   <header>
-    <!-- Logo + Title -->
     <div class="logo-title">
-      <img src="ditpay-logo.png" alt="DitPay Dashboard Logo" class="logo" />
-      <h1>DitPay Dashboard</h1>
+      <h1>DitPay</h1>
     </div>
 
-    <!-- Hamburger icon -->
-    <div class="menu-toggle" id="menu-toggle">&#9776;</div>
+    <!-- Hamburger menu for mobile -->
+    <div class="menu-toggle">☰</div>
 
-    <!-- Nav hidden inside hamburger -->
-    <nav id="nav-links">
+    <!-- Navigation links -->
+    <nav>
+      <a href="dashboard.html">Dashboard</a>
       <a href="wallet.html">Wallet</a>
       <a href="transactions.html">Transactions</a>
       <a href="profile.html">Profile</a>
-      <a href="index.html">Logout</a>
+      <a href="#" id="logout">Logout</a>
     </nav>
   </header>
 
-  <div class="welcome">
-    <h2>Welcome, Grace 👋</h2>
-    <p>Choose a service below to get started</p>
+  <!-- Dashboard content -->
+  <div class="container">
+    <h2>Welcome to Your Dashboard</h2>
+    <p class="welcome">Here you can manage your wallet, view transactions, and update your profile.</p>
+    <div class="services">
+      <div class="card">
+        <h3>Wallet</h3>
+        <p>Check your wallet balance and fund it.</p>
+        <a href="wallet.html">Go to Wallet</a>
+      </div>
+      <div class="card">
+        <h3>Transactions</h3>
+        <p>View all your transactions and their status.</p>
+        <a href="transactions.html">View Transactions</a>
+      </div>
+      <div class="card">
+        <h3>Profile</h3>
+        <p>Update your personal details and contact info.</p>
+        <a href="profile.html">View Profile</a>
+      </div>
+    </div>
   </div>
 
-  <section class="services">
-    <div class="card">
-      <h3>📱 Airtime</h3>
-      <p>Instant recharge for all networks</p>
-      <button>Buy Airtime</button>
-    </div>
-    <div class="card">
-      <h3>💡 Electricity</h3>
-      <p>Pay NEPA/DisCo bills with ease</p>
-      <button>Pay Bill</button>
-    </div>
-    <div class="card">
-      <h3>🌐 Data</h3>
-      <p>Affordable internet bundles</p>
-      <button>Buy Data</button>
-    </div>
-    <div class="card">
-      <h3>📺 TV Subscription</h3>
-      <p>Renew DSTV, GOTV, Startimes</p>
-      <button>Renew</button>
-    </div>
-  </section>
-
-  <footer><p>&copy; 2025 DitPay. All Rights Reserved.</p></footer>
-
-  <!-- JavaScript for Hamburger -->
+  <!-- Scripts -->
   <script>
-    const menuToggle = document.getElementById('menu-toggle');
-    const navLinks = document.getElementById('nav-links');
-
+    // Hamburger menu toggle
+    const menuToggle = document.querySelector('.menu-toggle');
+    const nav = document.querySelector('nav');
     menuToggle.addEventListener('click', () => {
-      navLinks.classList.toggle('show');
+      nav.classList.toggle('active');
     });
+
+    // Logout functionality
+    const logoutBtn = document.getElementById('logout');
+    logoutBtn.addEventListener('click', () => {
+      localStorage.removeItem('token'); // remove JWT
+      window.location.href = 'login.html'; // redirect to login
+    });
+
+    // Redirect to login if not logged in
+    if (!localStorage.getItem('token')) {
+      alert("Please login first.");
+      window.location.href = "login.html";
+    }
   </script>
 </body>
-      </html>
+  </html>
