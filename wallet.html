@@ -3,58 +3,101 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>DitPay - Forgot Password</title>
+  <title>DitPay - Wallet</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <header>
-    <h1>DitPay - Forgot Password</h1>
-  </header>
+  <div class="wrapper">
+    <header>
+      <h1>DitPay Wallet</h1>
+      <nav>
+        <a href="dashboard.html">Home</a>
+        <a href="wallet.html">Wallet</a>
+        <a href="transactions.html">Transactions</a>
+        <a href="profile.html">Profile</a>
+      </nav>
+    </header>
 
-  <main>
-    <section class="container">
-      <h2>Reset Your Password</h2>
-      <form id="forgotForm">
-        <label for="email">Enter your email:</label>
-        <input type="email" id="email" required />
-        <button type="submit">Request Reset</button>
-      </form>
+    <main class="flex-grow">
+      <div class="container">
+        <h2>Your Wallet</h2>
+        <p><strong>Balance:</strong> ₦<span id="walletBalance">Loading...</span></p>
 
-      <div id="resetLinkBox" class="reset-box">
-        <p>🔗 Click below to reset your password:</p>
-        <a id="resetLink" href="#">Reset Password</a>
+        <h3>Fund Wallet</h3>
+        <form id="fundForm">
+          <label for="amount">Amount:</label>
+          <input type="number" id="amount" required />
+          <button type="submit">Fund Wallet</button>
+        </form>
       </div>
-    </section>
-  </main>
+    </main>
 
-  <footer>
-    <p>&copy; 2025 DitPay. All Rights Reserved.</p>
-  </footer>
+    <footer>
+      <p>&copy; 2025 DitPay. All Rights Reserved.</p>
+    </footer>
+  </div>
 
   <script>
-    document.getElementById("forgotForm").addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const email = document.getElementById("email").value;
+    function logout() {
+      localStorage.removeItem("token");
+      window.location.href = "index.html";
+    }
+
+    async function loadWallet() {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        alert("No token found. Please log in.");
+        window.location.href = "index.html";
+        return;
+      }
 
       try {
-        const res = await fetch("https://dit-pay.onrender.com/forgot-password", {
+        const res = await fetch("https://dit-pay.onrender.com/wallet", {
+          headers: { "Authorization": "Bearer " + token }
+        });
+
+        if (res.ok) {
+          const data = await res.json();
+          document.getElementById("walletBalance").textContent = data.balance.toFixed(2);
+        } else {
+          document.getElementById("walletBalance").textContent = "Error";
+        }
+      } catch (err) {
+        console.error("Error loading wallet:", err);
+        document.getElementById("walletBalance").textContent = "Error";
+      }
+    }
+
+    document.getElementById("fundForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const token = localStorage.getItem("token");
+      const amount = parseFloat(document.getElementById("amount").value);
+
+      try {
+        const res = await fetch("https://dit-pay.onrender.com/wallet/fund", {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email })
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + token
+          },
+          body: JSON.stringify({ amount })
         });
 
         const data = await res.json();
         alert(data.message);
 
-        if (res.ok && data.resetLink) {
-          document.getElementById("resetLinkBox").style.display = "block";
-          document.getElementById("resetLink").href = data.resetLink;
+        if (res.ok) {
+          document.getElementById("fundForm").reset();
+          loadWallet();
         }
       } catch (err) {
-        alert("❌ Error requesting password reset.");
-        console.error(err);
+        console.error("Error funding wallet:", err);
+        alert("Error funding wallet.");
       }
     });
+
+    // Load wallet balance on page load
+    loadWallet();
   </script>
 </body>
-</html>
+      </html>
