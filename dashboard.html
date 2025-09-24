@@ -4,9 +4,15 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>DitPay - Dashboard</title>
+  <link rel="stylesheet" href="loader.css" /> <!-- Loader CSS -->
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <!-- Loader -->
+  <div class="loader-wrapper">
+    <div class="spinner"></div>
+  </div>
+
   <header>
     <div class="logo-title">
       <img src="ditpay-logo.png" alt="DitPay Dashboard Logo" class="logo" />
@@ -54,5 +60,12 @@
   <footer>
     <p>&copy; 2025 DitPay. All Rights Reserved.</p>
   </footer>
+
+  <!-- Loader Script -->
+  <script>
+    window.addEventListener("load", () => {
+      document.body.classList.add("loaded");
+    });
+  </script>
 </body>
-</html>
+  </html>
