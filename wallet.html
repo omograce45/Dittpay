@@ -3,28 +3,28 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>DitPay - Wallet</title>
+  <title>DitPay - Forgot Password</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <header>
-    <h1>DitPay Wallet</h1>
-    <nav>
-      <a href="dashboard.html">Home</a>
-      <a href="wallet.html">Wallet</a>
-      <a href="transactions.html">Transactions</a>
-      <a href="profile.html">Profile</a>
-    </nav>
+    <h1>DitPay - Forgot Password</h1>
   </header>
 
-  <!-- Main content wrapped in <main> -->
-  <main class="content">
-    <div class="container">
-      <h2>Your Wallet</h2>
-      <p><strong>Balance:</strong> ₦<span id="balance">0.00</span></p>
-      <button onclick="fundWallet()">💳 Fund Wallet</button>
-      <button onclick="loadWallet()">🔄 Refresh Balance</button>
-    </div>
+  <main>
+    <section class="container">
+      <h2>Reset Your Password</h2>
+      <form id="forgotForm">
+        <label for="email">Enter your email:</label>
+        <input type="email" id="email" required />
+        <button type="submit">Request Reset</button>
+      </form>
+
+      <div id="resetLinkBox" class="reset-box">
+        <p>🔗 Click below to reset your password:</p>
+        <a id="resetLink" href="#">Reset Password</a>
+      </div>
+    </section>
   </main>
 
   <footer>
@@ -32,47 +32,29 @@
   </footer>
 
   <script>
-    async function loadWallet() {
-      try {
-        const res = await fetch("https://dit-pay.onrender.com/wallet", {
-          headers: { "Authorization": "Bearer " + localStorage.getItem("token") }
-        });
-        if (res.ok) {
-          const data = await res.json();
-          document.getElementById("balance").innerText = data.balance;
-        } else {
-          alert("Unable to fetch wallet balance.");
-        }
-      } catch (err) {
-        alert("Error loading wallet.");
-      }
-    }
-
-    async function fundWallet() {
-      const amount = prompt("Enter amount to fund (₦):");
-      if (!amount) return;
+    document.getElementById("forgotForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const email = document.getElementById("email").value;
 
       try {
-        const res = await fetch("https://dit-pay.onrender.com/wallet/fund", {
+        const res = await fetch("https://dit-pay.onrender.com/forgot-password", {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": "Bearer " + localStorage.getItem("token")
-          },
-          body: JSON.stringify({ amount: parseFloat(amount) })
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email })
         });
 
         const data = await res.json();
         alert(data.message);
-        if (res.ok) {
-          loadWallet();
+
+        if (res.ok && data.resetLink) {
+          document.getElementById("resetLinkBox").style.display = "block";
+          document.getElementById("resetLink").href = data.resetLink;
         }
       } catch (err) {
-        alert("Error funding wallet.");
+        alert("❌ Error requesting password reset.");
+        console.error(err);
       }
-    }
-
-    loadWallet();
+    });
   </script>
 </body>
 </html>
