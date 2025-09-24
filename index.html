@@ -6,38 +6,168 @@
   <title>About DITPAY</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
   <style>
-    body { font-family: Arial, sans-serif; margin:0; padding:0; }
-    header { display: flex; justify-content: space-between; align-items: center; padding: 10px 20px; background: #fff; border-bottom: 1px solid #ccc; position: sticky; top:0; z-index:1000; }
-    header h1 { color: red; margin: 0; }
-    nav { display: flex; gap: 20px; }
-    nav a { text-decoration: none; color: #1a2a4f; font-weight: bold; }
-    .menu-toggle { display: none; font-size: 24px; cursor: pointer; }
+    body { 
+      font-family: Arial, sans-serif; 
+      margin:0; 
+      padding:0; 
+      background: #f8f9fc; 
+      color: #555;
+    }
+    header { 
+      display: flex; 
+      justify-content: space-between; 
+      align-items: center; 
+      padding: 15px 20px; 
+      background: #2c3e50; 
+      color: white; 
+      position: sticky; 
+      top:0; 
+      z-index:1000; 
+    }
+    header h1 { 
+      color: #fff; 
+      margin: 0; 
+      font-size: 22px; 
+    }
+    nav { 
+      display: flex; 
+      gap: 20px; 
+    }
+    nav a { 
+      text-decoration: none; 
+      color: #fff; 
+      font-weight: bold; 
+      transition: color 0.3s; 
+    }
+    nav a:hover { 
+      color: #20c997; 
+    }
+    .menu-toggle { 
+      display: none; 
+      font-size: 24px; 
+      cursor: pointer; 
+      color: #fff;
+    }
 
-    main { max-width: 900px; margin: 0 auto; padding: 20px; }
-    section { margin-bottom: 50px; text-align: center; }
-    section img { max-width: 300px; width: 100%; border-radius: 10px; margin: 20px 0; }
-    h2 { color: #1a2a4f; margin-bottom: 15px; }
-    p { color: #555; line-height: 1.6; margin-bottom: 15px; }
-    ul { list-style: none; padding: 0; text-align: left; display: inline-block; margin-top: 20px; }
-    ul li { margin-bottom: 10px; font-size: 16px; }
-    ul li i { color: orange; margin-right: 10px; }
+    main { 
+      max-width: 900px; 
+      margin: 0 auto; 
+      padding: 20px; 
+    }
+    section { 
+      margin-bottom: 50px; 
+      text-align: center; 
+    }
+    section img { 
+      max-width: 300px; 
+      width: 100%; 
+      border-radius: 10px; 
+      margin: 20px 0; 
+    }
+    h2 { 
+      color: #2c3e50; 
+      margin-bottom: 15px; 
+    }
+    p { 
+      color: #555; 
+      line-height: 1.6; 
+      margin-bottom: 15px; 
+    }
+    ul { 
+      list-style: none; 
+      padding: 0; 
+      text-align: left; 
+      display: inline-block; 
+      margin-top: 20px; 
+    }
+    ul li { 
+      margin-bottom: 10px; 
+      font-size: 16px; 
+    }
+    ul li i { 
+      color: #20c997; 
+      margin-right: 10px; 
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-block;
+      background: #20c997;
+      color: #fff;
+      padding: 10px 20px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: background 0.3s;
+      margin-top: 10px;
+    }
+    .btn:hover {
+      background: #17a589;
+    }
+
+    /* Links inside text */
+    a.link {
+      color: #20c997;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    a.link:hover {
+      text-decoration: underline;
+    }
 
     /* FAQ */
-    .faq { max-width: 700px; margin: 0 auto; text-align: left; }
-    .faq-item { border-bottom: 1px solid #ddd; padding: 10px 0; }
-    .faq-question { cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-weight: bold; color: #1a2a4f; }
-    .faq-answer { display: none; padding: 10px 0; color: #555; }
+    .faq { 
+      max-width: 700px; 
+      margin: 0 auto; 
+      text-align: left; 
+    }
+    .faq-item { 
+      border-bottom: 1px solid #ddd; 
+      padding: 10px 0; 
+    }
+    .faq-question { 
+      cursor: pointer; 
+      display: flex; 
+      justify-content: space-between; 
+      align-items: center; 
+      font-weight: bold; 
+      color: #2c3e50; 
+    }
+    .faq-answer { 
+      display: none; 
+      padding: 10px 0; 
+      color: #555; 
+    }
 
     /* Footer */
-    footer { background: #0a1a3f; color: white; padding: 30px 20px; text-align: center; }
-    footer h3 { margin-top: 0; color: red; }
-    footer a { color: #fff; text-decoration: none; display: block; margin: 5px 0; }
-    footer .footer-section { margin-bottom: 20px; }
+    footer { 
+      background: #2c3e50; 
+      color: white; 
+      padding: 30px 20px; 
+      text-align: center; 
+    }
+    footer h3 { 
+      margin-top: 0; 
+      color: #20c997; 
+    }
+    footer a { 
+      color: #fff; 
+      text-decoration: none; 
+      display: block; 
+      margin: 5px 0; 
+      transition: color 0.3s;
+    }
+    footer a:hover { 
+      color: #20c997; 
+    }
+    footer .footer-section { 
+      margin-bottom: 20px; 
+    }
 
     /* WhatsApp floating button */
     .whatsapp-btn {
       position: fixed; bottom: 20px; right: 20px;
-      background: #25D366; color: white;
+      background: #20c997; color: white;
       border-radius: 50%; width: 60px; height: 60px;
       display: flex; justify-content: center; align-items: center;
       font-size: 28px; text-decoration: none; box-shadow: 0 2px 5px rgba(0,0,0,0.3);
@@ -50,7 +180,17 @@
     }
 
     @media(max-width:768px){
-      nav { display: none; flex-direction: column; background: #fff; position: absolute; top: 60px; right: 0; width: 200px; border: 1px solid #ccc; }
+      nav { 
+        display: none; 
+        flex-direction: column; 
+        background: #2c3e50; 
+        position: absolute; 
+        top: 60px; 
+        right: 0; 
+        width: 200px; 
+        border: 1px solid #ccc; 
+        padding: 10px;
+      }
       nav.show { display: flex; }
       .menu-toggle { display: block; }
       section img { max-width: 100%; }
@@ -76,6 +216,7 @@
     <section>
       <h2>Stay Connected With Our Affordable And Convenient Data Packages</h2>
       <p>We offer a range of packages that are tailored to suit your specific needs and budget.</p>
+      <a href="signup.html" class="btn">Get Started</a>
       <img src="hero-image.png" alt="Customer using ZOEDATA">
     </section>
 
@@ -91,6 +232,7 @@
         <li><i class="fa-solid fa-check"></i> Always Online</li>
         <li><i class="fa-solid fa-check"></i> 24/7 Customer Support</li>
       </ul>
+      <a href="services.html" class="btn">Explore Services</a>
       <img src="why-choose-us.png" alt="Why Choose Us Image">
     </section>
 
@@ -99,6 +241,7 @@
       <h2>Become An Agent</h2>
       <p>Join our network of outstanding entrepreneurs partnering with ZOEDATA. Bring the 'easy-payments' experience closer to your network and earn a commission for every transaction you perform for your customers.</p>
       <p>We offer our Referrers the best referral program incentives to encourage entrepreneurial and managerial skill acquisition, enhance growth and development, and general empowerment among our users.</p>
+      <a href="agent.html" class="btn">Join Now</a>
       <img src="agent.png" alt="Become an Agent">
     </section>
 
@@ -169,4 +312,4 @@
     });
   </script>
 </body>
-              </html>
+</html>
