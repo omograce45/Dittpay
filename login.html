@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">    
+<head>    
+  <meta charset="utf-8" />    
+  <meta name="viewport" content="width=device-width,initial-scale=1" />    
+  <title>DitPay - Login</title>    
+  <link rel="stylesheet" href="loader.css" /> <!-- Loader CSS -->
+  <link rel="stylesheet" href="style.css" />
+  <!-- FontAwesome for eye icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+</head>    
+<body>    
+  <!-- Loader -->
+  <div class="loader-wrapper">
+    <div class="spinner"></div>
+  </div>
+
+  <!-- Centered Title with Flexbox -->
+  <header style="display: flex; justify-content: center; align-items: center; height: 80px;">
+    <h1 style="margin: 0;">DitPay</h1>
+  </header>    
+
+  <div class="container">    
+    <h2>Login to Your Account</h2>    
+    <form id="loginForm">    
+      <label for="email">Email Address</label>    
+      <input type="email" id="email" required />    
+
+      <label for="password">Password</label>
+      <div class="password-wrapper" style="position: relative; display: flex; align-items: center;">
+        <input type="password" id="password" required style="flex: 1;"/>
+        <i id="togglePassword" class="fa-solid fa-eye" style="cursor: pointer; margin-left: -30px;"></i>
+      </div>
+
+      <button type="submit">Login</button>    
+    </form>    
+
+    <div class="link">    
+      <p>Don't have an account? <a href="signup.html">Sign Up</a></p>    
+      <p><a href="forgot-password.html">Forgot Password?</a></p>    
+    </div>
+  </div>      
+
+  <script>    
+    // Loader hide when page fully loads
+    window.addEventListener("load", () => {
+      document.body.classList.add("loaded");
+    });
+
+    // Login form submission (unchanged)
+    document.getElementById('loginForm').addEventListener('submit', async function(e){    
+      e.preventDefault();    
+    
+      const email = document.getElementById('email').value.trim();    
+      const password = document.getElementById('password').value;    
+    
+      try {    
+        const res = await fetch('https://dit-pay.onrender.com/login', {    
+          method: 'POST',    
+          headers: { 'Content-Type': 'application/json' },    
+          body: JSON.stringify({ email, password })    
+        });    
+    
+        const data = await res.json();    
+        alert(data.message); // show backend response    
+    
+        if (res.ok && data.token) {    
+          localStorage.setItem('token', data.token);    
+          window.location.href = 'dashboard.html';    
+        } else {    
+          console.error("Login failed:", data);    
+        }    
+      } catch (err) {    
+        alert('❌ Error connecting to server.');    
+        console.error("Login request error:", err);    
+      }    
+    });
+
+    // Toggle password visibility with FontAwesome icons
+    const togglePassword = document.getElementById('togglePassword');
+    const passwordInput = document.getElementById('password');
+
+    togglePassword.addEventListener('click', () => {
+      const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+      passwordInput.setAttribute('type', type);
+
+      // Switch icon
+      togglePassword.classList.toggle('fa-eye');
+      togglePassword.classList.toggle('fa-eye-slash');
+    });
+  </script>    
+</body>    
+</html>
