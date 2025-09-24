@@ -7,97 +7,72 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="wrapper">
-    <header>
-      <h1>DitPay Wallet</h1>
-      <nav>
-        <a href="dashboard.html">Home</a>
-        <a href="wallet.html">Wallet</a>
-        <a href="transactions.html">Transactions</a>
-        <a href="profile.html">Profile</a>
-      </nav>
-    </header>
+  <header>
+    <h1>DitPay Wallet</h1>
+    <nav>
+      <a href="dashboard.html">Home</a>
+      <a href="wallet.html">Wallet</a>
+      <a href="transactions.html">Transactions</a>
+      <a href="profile.html">Profile</a>
+    </nav>
+  </header>
 
-    <main class="flex-grow">
-      <div class="container">
-        <h2>Your Wallet</h2>
-        <p><strong>Balance:</strong> ₦<span id="walletBalance">Loading...</span></p>
+  <!-- Main content wrapped in <main> -->
+  <main class="content">
+    <div class="container">
+      <h2>Your Wallet</h2>
+      <p><strong>Balance:</strong> ₦<span id="balance">0.00</span></p>
+      <button onclick="fundWallet()">💳 Fund Wallet</button>
+      <button onclick="loadWallet()">🔄 Refresh Balance</button>
+    </div>
+  </main>
 
-        <h3>Fund Wallet</h3>
-        <form id="fundForm">
-          <label for="amount">Amount:</label>
-          <input type="number" id="amount" required />
-          <button type="submit">Fund Wallet</button>
-        </form>
-      </div>
-    </main>
-
-    <footer>
-      <p>&copy; 2025 DitPay. All Rights Reserved.</p>
-    </footer>
-  </div>
+  <footer>
+    <p>&copy; 2025 DitPay. All Rights Reserved.</p>
+  </footer>
 
   <script>
-    function logout() {
-      localStorage.removeItem("token");
-      window.location.href = "index.html";
-    }
-
     async function loadWallet() {
-      const token = localStorage.getItem("token");
-      if (!token) {
-        alert("No token found. Please log in.");
-        window.location.href = "index.html";
-        return;
-      }
-
       try {
         const res = await fetch("https://dit-pay.onrender.com/wallet", {
-          headers: { "Authorization": "Bearer " + token }
+          headers: { "Authorization": "Bearer " + localStorage.getItem("token") }
         });
-
         if (res.ok) {
           const data = await res.json();
-          document.getElementById("walletBalance").textContent = data.balance.toFixed(2);
+          document.getElementById("balance").innerText = data.balance;
         } else {
-          document.getElementById("walletBalance").textContent = "Error";
+          alert("Unable to fetch wallet balance.");
         }
       } catch (err) {
-        console.error("Error loading wallet:", err);
-        document.getElementById("walletBalance").textContent = "Error";
+        alert("Error loading wallet.");
       }
     }
 
-    document.getElementById("fundForm").addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const token = localStorage.getItem("token");
-      const amount = parseFloat(document.getElementById("amount").value);
+    async function fundWallet() {
+      const amount = prompt("Enter amount to fund (₦):");
+      if (!amount) return;
 
       try {
         const res = await fetch("https://dit-pay.onrender.com/wallet/fund", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            "Authorization": "Bearer " + token
+            "Authorization": "Bearer " + localStorage.getItem("token")
           },
-          body: JSON.stringify({ amount })
+          body: JSON.stringify({ amount: parseFloat(amount) })
         });
 
         const data = await res.json();
         alert(data.message);
-
         if (res.ok) {
-          document.getElementById("fundForm").reset();
           loadWallet();
         }
       } catch (err) {
-        console.error("Error funding wallet:", err);
         alert("Error funding wallet.");
       }
-    });
+    }
 
-    // Load wallet balance on page load
     loadWallet();
   </script>
 </body>
-      </html>
+</html>
