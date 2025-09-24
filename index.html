@@ -24,8 +24,11 @@
       <label for="email">Email Address</label>    
       <input type="email" id="email" required />    
 
-      <label for="password">Password</label>    
-      <input type="password" id="password" required />    
+      <label for="password">Password</label>
+      <div class="password-wrapper" style="position: relative; display: flex; align-items: center;">
+        <input type="password" id="password" required style="flex: 1;"/>
+        <span id="togglePassword" style="cursor: pointer; margin-left: -30px;">👁️</span>
+      </div>
 
       <button type="submit">Login</button>    
     </form>    
@@ -42,6 +45,7 @@
       document.body.classList.add("loaded");
     });
 
+    // Login form submission
     document.getElementById('loginForm').addEventListener('submit', async function(e){    
       e.preventDefault();    
     
@@ -59,10 +63,7 @@
         alert(data.message); // show backend response    
     
         if (res.ok && data.token) {    
-          // ✅ Save JWT token    
           localStorage.setItem('token', data.token);    
-              
-          // ✅ Redirect to dashboard    
           window.location.href = 'dashboard.html';    
         } else {    
           console.error("Login failed:", data);    
@@ -71,7 +72,17 @@
         alert('❌ Error connecting to server.');    
         console.error("Login request error:", err);    
       }    
-    });    
+    });
+
+    // Toggle password visibility
+    const togglePassword = document.getElementById('togglePassword');
+    const passwordInput = document.getElementById('password');
+
+    togglePassword.addEventListener('click', () => {
+      const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+      passwordInput.setAttribute('type', type);
+      togglePassword.textContent = type === 'password' ? '👁️' : '🙈';
+    });
   </script>    
 </body>    
-</html>
+    </html>
