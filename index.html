@@ -5,7 +5,9 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />    
   <title>DitPay - Login</title>    
   <link rel="stylesheet" href="loader.css" /> <!-- Loader CSS -->
-  <link rel="stylesheet" href="style.css" />    
+  <link rel="stylesheet" href="style.css" />
+  <!-- FontAwesome for eye icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
 </head>    
 <body>    
   <!-- Loader -->
@@ -27,7 +29,7 @@
       <label for="password">Password</label>
       <div class="password-wrapper" style="position: relative; display: flex; align-items: center;">
         <input type="password" id="password" required style="flex: 1;"/>
-        <span id="togglePassword" style="cursor: pointer; margin-left: -30px;">👁️</span>
+        <i id="togglePassword" class="fa-solid fa-eye" style="cursor: pointer; margin-left: -30px;"></i>
       </div>
 
       <button type="submit">Login</button>    
@@ -45,7 +47,7 @@
       document.body.classList.add("loaded");
     });
 
-    // Login form submission
+    // Login form submission (unchanged)
     document.getElementById('loginForm').addEventListener('submit', async function(e){    
       e.preventDefault();    
     
@@ -74,15 +76,18 @@
       }    
     });
 
-    // Toggle password visibility
+    // Toggle password visibility with FontAwesome icons
     const togglePassword = document.getElementById('togglePassword');
     const passwordInput = document.getElementById('password');
 
     togglePassword.addEventListener('click', () => {
       const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
       passwordInput.setAttribute('type', type);
-      togglePassword.textContent = type === 'password' ? '👁️' : '🙈';
+
+      // Switch icon
+      togglePassword.classList.toggle('fa-eye');
+      togglePassword.classList.toggle('fa-eye-slash');
     });
   </script>    
 </body>    
-    </html>
+</html>
