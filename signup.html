@@ -4,31 +4,48 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>DitPay - Sign Up</title>
+  <link rel="stylesheet" href="loader.css" /> <!-- Loader CSS -->
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <!-- Loader -->
+  <div class="loader-wrapper">
+    <div class="spinner"></div>
+  </div>
+
   <header><h1>DitPay</h1></header>
   <div class="container">
     <h2>Create an Account</h2>
     <form id="signupForm">
       <label for="fullname">Full Name</label>
       <input type="text" id="fullname" required />
+
       <label for="email">Email Address</label>
       <input type="email" id="email" required />
+
       <label for="phone">Phone Number</label>
       <input type="tel" id="phone" required />
+
       <label for="password">Password</label>
       <input type="password" id="password" required />
+
       <label for="confirm">Confirm Password</label>
       <input type="password" id="confirm" required />
+
       <button type="submit">Sign Up</button>
     </form>
+
     <div class="link">
       <p>Already have an account? <a href="index.html">Login</a></p>
     </div>
   </div>
 
   <script>
+    // Loader hide when page fully loads
+    window.addEventListener("load", () => {
+      document.body.classList.add("loaded");
+    });
+
     document.getElementById('signupForm').addEventListener('submit', async function(e){
       e.preventDefault();
 
@@ -63,4 +80,4 @@
     });
   </script>
 </body>
-</html>
+                                    </html>
