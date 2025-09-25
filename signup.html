@@ -4,7 +4,8 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>DitPay - Sign Up</title>
-  <link rel="stylesheet" href="loader.css" /> <!-- Loader CSS -->
+  <link rel="stylesheet" href="loader.css" />
+  <link rel="stylesheet" href="style.css" />
 
   <style>
     body {
@@ -20,8 +21,11 @@
       justify-content: center;
       align-items: center;
       height: 80px;
-      background: rgba(0, 0, 0, 0.5); /* Transparent overlay */
+      /* remove background box — make it transparent over the image */
       color: white;
+      font-size: 24px;
+      font-weight: bold;
+      text-shadow: 1px 1px 4px rgba(0,0,0,0.8); /* make text visible on bg */
     }
 
     .container {
@@ -59,14 +63,14 @@
       margin-top: 20px;
       border: none;
       border-radius: 5px;
-      background: #007BFF; /* Blue */
+      background: #007BFF; /* blue */
       color: white;
       font-size: 16px;
       cursor: pointer;
     }
 
     button:hover {
-      background: #0056b3; /* Darker blue */
+      background: #0056b3; /* darker blue */
     }
 
     .link {
@@ -75,7 +79,7 @@
     }
 
     .link a {
-      color: #007BFF;
+      color: #007BFF; /* blue */
       text-decoration: none;
     }
 
@@ -91,7 +95,7 @@
   </div>
 
   <header>
-    <h1>DitPay</h1>
+    DitPay
   </header>
 
   <div class="container">
@@ -121,7 +125,6 @@
   </div>
 
   <script>
-    // Loader hide when page fully loads
     window.addEventListener("load", () => {
       document.body.classList.add("loaded");
     });
@@ -160,4 +163,4 @@
     });
   </script>
 </body>
-        </html>
+</html>
