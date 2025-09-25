@@ -4,22 +4,104 @@
   <meta charset="utf-8" />    
   <meta name="viewport" content="width=device-width,initial-scale=1" />    
   <title>DitPay - Login</title>    
-  <link rel="stylesheet" href="loader.css" /> <!-- Loader CSS -->
-  <link rel="stylesheet" href="style.css" />
+
   <!-- FontAwesome for eye icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+
+  <style>
+    /* === Background Styling === */
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      font-family: Arial, sans-serif;
+      background: url("background.jpg") no-repeat center center/cover;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* Overlay for readability */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: -1;
+    }
+
+    /* === Form Container === */
+    .container {
+      max-width: 400px;
+      width: 90%;
+      margin-top: 50px;
+      padding: 30px;
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 12px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+      text-align: center;
+    }
+
+    /* === Headings === */
+    h1, h2 {
+      color: #003366;
+      margin-bottom: 20px;
+      font-weight: 600;
+    }
+
+    /* === Inputs === */
+    input {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0 20px 0;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 14px;
+    }
+
+    /* === Buttons === */
+    button {
+      width: 100%;
+      padding: 12px;
+      background: #0047ab;
+      color: #fff;
+      font-size: 15px;
+      font-weight: bold;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background: #003366;
+    }
+
+    /* === Links === */
+    .link {
+      margin-top: 15px;
+    }
+
+    .link a {
+      color: #0047ab;
+      text-decoration: none;
+    }
+
+    .link a:hover {
+      text-decoration: underline;
+    }
+  </style>
 </head>    
 <body>    
-  <!-- Loader -->
-  <div class="loader-wrapper">
-    <div class="spinner"></div>
-  </div>
-
-  <!-- Centered Title with Flexbox -->
+  <!-- Header -->
   <header style="display: flex; justify-content: center; align-items: center; height: 80px;">
     <h1 style="margin: 0;">DitPay</h1>
   </header>    
 
+  <!-- Login Form -->
   <div class="container">    
     <h2>Login to Your Account</h2>    
     <form id="loginForm">    
@@ -42,12 +124,7 @@
   </div>      
 
   <script>    
-    // Loader hide when page fully loads
-    window.addEventListener("load", () => {
-      document.body.classList.add("loaded");
-    });
-
-    // Login form submission (unchanged)
+    // Login form submission
     document.getElementById('loginForm').addEventListener('submit', async function(e){    
       e.preventDefault();    
     
@@ -62,13 +139,11 @@
         });    
     
         const data = await res.json();    
-        alert(data.message); // show backend response    
+        alert(data.message);    
     
         if (res.ok && data.token) {    
           localStorage.setItem('token', data.token);    
           window.location.href = 'dashboard.html';    
-        } else {    
-          console.error("Login failed:", data);    
         }    
       } catch (err) {    
         alert('❌ Error connecting to server.');    
@@ -76,18 +151,16 @@
       }    
     });
 
-    // Toggle password visibility with FontAwesome icons
+    // Toggle password visibility
     const togglePassword = document.getElementById('togglePassword');
     const passwordInput = document.getElementById('password');
 
     togglePassword.addEventListener('click', () => {
       const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
       passwordInput.setAttribute('type', type);
-
-      // Switch icon
       togglePassword.classList.toggle('fa-eye');
       togglePassword.classList.toggle('fa-eye-slash');
     });
   </script>    
 </body>    
-</html>
+  </html>
