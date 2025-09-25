@@ -5,10 +5,61 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />    
   <title>DitPay - Login</title>    
 
-  <!-- FontAwesome for eye icons -->
+  <!-- FontAwesome for icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
 
   <style>
+    /* === Loader Screen === */
+    #loader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.95);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      font-family: Arial, sans-serif;
+      opacity: 1;
+      transition: opacity 0.8s ease; /* fade-out transition */
+    }
+
+    #loader.fade-out {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    #loader i {
+      font-size: 50px;
+      color: #0047ab;
+      animation: spin 1s linear infinite;
+    }
+
+    #loader p {
+      margin-top: 15px;
+      font-size: 18px;
+      color: #003366;
+      font-weight: bold;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* Hide content until loaded */
+    body.loaded .container,
+    body.loaded header {
+      display: block;
+    }
+
+    .container, header {
+      display: none;
+    }
+
     /* === Background Styling === */
     body {
       margin: 0;
@@ -21,7 +72,6 @@
       align-items: center;
     }
 
-    /* Overlay for readability */
     body::before {
       content: "";
       position: fixed;
@@ -33,7 +83,6 @@
       z-index: -1;
     }
 
-    /* === Form Container === */
     .container {
       max-width: 400px;
       width: 90%;
@@ -45,14 +94,12 @@
       text-align: center;
     }
 
-    /* === Headings === */
     h1, h2 {
       color: #003366;
       margin-bottom: 20px;
       font-weight: 600;
     }
 
-    /* === Inputs === */
     input {
       width: 100%;
       padding: 12px;
@@ -62,7 +109,6 @@
       font-size: 14px;
     }
 
-    /* === Buttons === */
     button {
       width: 100%;
       padding: 12px;
@@ -80,7 +126,6 @@
       background: #003366;
     }
 
-    /* === Links === */
     .link {
       margin-top: 15px;
     }
@@ -96,6 +141,13 @@
   </style>
 </head>    
 <body>    
+
+  <!-- Loader -->
+  <div id="loader">
+    <i class="fa-solid fa-rotate-right"></i>
+    <p>Loading DitPay…</p>
+  </div>
+
   <!-- Header -->
   <header style="display: flex; justify-content: center; align-items: center; height: 80px;">
     <h1 style="margin: 0;">DitPay</h1>
@@ -124,6 +176,16 @@
   </div>      
 
   <script>    
+    // Loader hide after page load with fade-out
+    window.addEventListener("load", () => {
+      const loader = document.getElementById("loader");
+      document.body.classList.add("loaded");
+      loader.classList.add("fade-out");
+      setTimeout(() => {
+        loader.style.display = "none";
+      }, 800); // matches transition duration
+    });
+
     // Login form submission
     document.getElementById('loginForm').addEventListener('submit', async function(e){    
       e.preventDefault();    
@@ -163,4 +225,4 @@
     });
   </script>    
 </body>    
-  </html>
+          </html>
