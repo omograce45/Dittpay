@@ -13,6 +13,44 @@
       background: #f8f9fc; 
       color: #555;
     }
+
+    /* === Loader Screen === */
+    #loader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #f8f9fc;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      font-family: Arial, sans-serif;
+      opacity: 1;
+      transition: opacity 0.8s ease;
+    }
+    #loader.fade-out {
+      opacity: 0;
+      pointer-events: none;
+    }
+    #loader i {
+      font-size: 50px;
+      color: #007BFF;
+      animation: spin 1s linear infinite;
+    }
+    #loader p {
+      margin-top: 15px;
+      font-size: 18px;
+      color: #007BFF;
+      font-weight: bold;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
     header { 
       display: flex; 
       justify-content: space-between; 
@@ -172,6 +210,7 @@
       display: flex; justify-content: center; align-items: center;
       font-size: 28px; text-decoration: none; box-shadow: 0 2px 5px rgba(0,0,0,0.3);
       animation: pulse 1.5s infinite;
+      z-index: 1001;
     }
     @keyframes pulse {
       0% { transform: scale(1); }
@@ -198,6 +237,13 @@
   </style>
 </head>
 <body>
+
+  <!-- Loader -->
+  <div id="loader">
+    <i class="fa-solid fa-rotate-right"></i>
+    <p>Loading DitPay…</p>
+  </div>
+
   <!-- Header -->
   <header>
     <h1>DITPAY</h1>
@@ -291,6 +337,15 @@
 
   <!-- Script -->
   <script>
+    // Loader fade-out
+    window.addEventListener("load", () => {
+      const loader = document.getElementById("loader");
+      loader.classList.add("fade-out");
+      setTimeout(() => {
+        loader.style.display = "none";
+      }, 800);
+    });
+
     // Mobile menu toggle
     document.querySelector(".menu-toggle").addEventListener("click", function() {
       document.querySelector("nav").classList.toggle("show");
@@ -308,4 +363,4 @@
     });
   </script>
 </body>
-</html>
+  </html>
