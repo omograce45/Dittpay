@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>DitPay - Wallet</title>
   <link rel="stylesheet" href="style.css" />
+  <!-- ✅ Paystack script -->
   <script src="https://js.paystack.co/v1/inline.js"></script>
 </head>
 <body>
@@ -18,7 +19,6 @@
     </nav>
   </header>
 
-  <!-- Main content wrapped in <main> -->
   <main class="content">
     <div class="container">
       <h2>Your Wallet</h2>
@@ -43,9 +43,11 @@
           const data = await res.json();
           document.getElementById("balance").innerText = data.balance;
         } else {
+          console.error("Wallet fetch failed:", res.status);
           alert("Unable to fetch wallet balance.");
         }
       } catch (err) {
+        console.error("Error loading wallet:", err);
         alert("Error loading wallet.");
       }
     }
@@ -55,6 +57,13 @@
       const amount = prompt("Enter amount to fund (₦):");
       if (!amount) return;
 
+      // ✅ Safety check
+      if (typeof PaystackPop === "undefined") {
+        alert("Paystack script not loaded. Check internet/HTTPS.");
+        console.error("❌ PaystackPop is undefined. Script failed to load.");
+        return;
+      }
+
       let handler = PaystackPop.setup({
         key: "pk_live_a58e433c09f1575cb5d7517ccfed4eb3ce3aab7b", // 🔑 Your PUBLIC key
         email: localStorage.getItem("userEmail") || "customer@example.com",
@@ -62,7 +71,8 @@
         currency: "NGN",
         ref: "DITPAY-" + Date.now(), // unique transaction reference
         callback: async function(response) {
-          // ✅ Send reference + amount to backend for verification
+          console.log("✅ Paystack response:", response);
+
           try {
             const res = await fetch("https://dit-pay.onrender.com/wallet/fund", {
               method: "POST",
@@ -81,12 +91,16 @@
 
             if (res.ok) {
               loadWallet();
+            } else {
+              console.error("Wallet fund failed:", data);
             }
           } catch (err) {
+            console.error("❌ Error verifying payment:", err);
             alert("Error verifying payment.");
           }
         },
         onClose: function() {
+          console.warn("⚠️ Transaction was not completed.");
           alert("Transaction was not completed.");
         }
       });
@@ -98,4 +112,4 @@
     loadWallet();
   </script>
 </body>
-  </html>
+</html>
