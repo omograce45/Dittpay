@@ -33,10 +33,12 @@
   </footer>
 
   <script>
+    const API_BASE = "https://dit-pay.onrender.com"; // ✅ Your Render API URL
+
     // ✅ Load Wallet Balance
     async function loadWallet() {
       try {
-        const res = await fetch("https://dit-pay.onrender.com/wallet", {
+        const res = await fetch(`${API_BASE}/wallet`, {
           headers: { "Authorization": "Bearer " + localStorage.getItem("token") }
         });
         if (res.ok) {
@@ -74,7 +76,7 @@
           console.log("✅ Paystack response:", response);
 
           try {
-            const res = await fetch("https://dit-pay.onrender.com/wallet/fund", {
+            const res = await fetch(`${API_BASE}/wallet/fund`, {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
