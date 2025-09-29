@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>DitPay - Pay Electricity</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>Pay Electricity Bill</h1>
+    <nav>
+      <a href="dashboard.html">Home</a>
+      <a href="wallet.html">Wallet</a>
+      <a href="transactions.html">Transactions</a>
+      <a href="profile.html">Profile</a>
+    </nav>
+  </header>
+
+  <main class="content">
+    <div class="container">
+      <h2>Electricity Bill Payment</h2>
+
+      <form id="electricityForm">
+        <label>Meter Number:</label><br>
+        <input type="text" id="meter" placeholder="1234567890" required /><br><br>
+
+        <label>DisCo Provider:</label><br>
+        <select id="disco" required>
+          <option value="">-- Choose Provider --</option>
+          <option value="ikeja">Ikeja Electric</option>
+          <option value="eko">Eko Electric</option>
+          <option value="abuja">Abuja Electric</option>
+          <option value="ibadan">Ibadan Electric</option>
+          <option value="kano">Kano Electric</option>
+          <option value="benin">Benin (BEDC)</option>
+        </select><br><br>
+
+        <label>Amount (₦):</label><br>
+        <input type="number" id="amount" min="500" required /><br><br>
+
+        <button type="submit">💡 Pay Electricity</button>
+      </form>
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 DitPay. All Rights Reserved.</p>
+  </footer>
+
+  <script>
+    const API_BASE = "https://dit-pay.onrender.com"; // ✅ Your backend URL
+
+    document.getElementById("electricityForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const meter = document.getElementById("meter").value.trim();
+      const disco = document.getElementById("disco").value;
+      const amount = document.getElementById("amount").value;
+
+      if (!meter || !disco || !amount) {
+        alert("Please fill all fields.");
+        return;
+      }
+
+      try {
+        const res = await fetch(`${API_BASE}/pay-electricity`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + localStorage.getItem("token")
+          },
+          body: JSON.stringify({ meter, disco, amount: parseFloat(amount) })
+        });
+
+        const data = await res.json();
+        if (res.ok) {
+          alert(data.message + `\nNew Balance: ₦${data.new_balance}`);
+        } else {
+          alert(data.message || "❌ Electricity payment failed");
+        }
+      } catch (err) {
+        console.error("❌ Error:", err);
+        alert("Server error, try again later.");
+      }
+    });
+  </script>
+</body>
+</html>
