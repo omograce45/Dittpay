@@ -47,7 +47,7 @@
   </footer>
 
   <script>
-    const API_BASE = "https://dit-pay.onrender.com"; // ✅ Your backend base URL
+    const API_BASE = "https://dit-pay.onrender.com"; // Your backend URL
 
     document.getElementById("airtimeForm").addEventListener("submit", async (e) => {
       e.preventDefault();
@@ -73,7 +73,7 @@
 
         const data = await res.json();
         if (res.ok) {
-          alert(data.message + `\nNew Balance: ₦${data.new_balance}`);
+          alert(`${data.message}\nNew Balance: ₦${data.new_balance}`);
         } else {
           alert(data.message || "❌ Airtime purchase failed");
         }
