@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>DitPay - TV Subscription</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>TV Subscription</h1>
+    <nav>
+      <a href="dashboard.html">Home</a>
+      <a href="wallet.html">Wallet</a>
+      <a href="transactions.html">Transactions</a>
+      <a href="profile.html">Profile</a>
+    </nav>
+  </header>
+
+  <main class="content">
+    <div class="container">
+      <h2>Pay TV Bills</h2>
+
+      <form id="tvForm">
+        <label>Decoder Number (Smart Card / IUC):</label><br>
+        <input type="text" id="decoder" placeholder="Enter decoder number" required /><br><br>
+
+        <label>Provider:</label><br>
+        <select id="provider" required>
+          <option value="">-- Choose Provider --</option>
+          <option value="dstv">DSTV</option>
+          <option value="gotv">GOTV</option>
+          <option value="startimes">Startimes</option>
+        </select><br><br>
+
+        <label>Package:</label><br>
+        <select id="package" required>
+          <option value="">-- Choose Package --</option>
+          <option value="basic">Basic</option>
+          <option value="compact">Compact</option>
+          <option value="premium">Premium</option>
+        </select><br><br>
+
+        <button type="submit">📺 Subscribe</button>
+      </form>
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 DitPay. All Rights Reserved.</p>
+  </footer>
+
+  <script>
+    const API_BASE = "https://dit-pay.onrender.com";
+
+    document.getElementById("tvForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const decoder = document.getElementById("decoder").value.trim();
+      const provider = document.getElementById("provider").value;
+      const packageName = document.getElementById("package").value;
+
+      if (!decoder || !provider || !packageName) {
+        alert("Please fill all fields.");
+        return;
+      }
+
+      try {
+        const res = await fetch(`${API_BASE}/buy-tv`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + localStorage.getItem("token")
+          },
+          body: JSON.stringify({ decoder, provider, package: packageName })
+        });
+
+        const data = await res.json();
+        if (res.ok) {
+          alert(data.message + `\nNew Balance: ₦${data.new_balance}`);
+        } else {
+          alert(data.message || "❌ TV subscription failed");
+        }
+      } catch (err) {
+        console.error("❌ Error:", err);
+        alert("Server error, try again later.");
+      }
+    });
+  </script>
+</body>
+</html>

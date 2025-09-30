@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>DitPay - Buy Data</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>Buy Data</h1>
+    <nav>
+      <a href="dashboard.html">Home</a>
+      <a href="wallet.html">Wallet</a>
+      <a href="transactions.html">Transactions</a>
+      <a href="profile.html">Profile</a>
+    </nav>
+  </header>
+
+  <main class="content">
+    <div class="container">
+      <h2>Data Purchase</h2>
+
+      <form id="dataForm">
+        <label>Phone Number:</label><br>
+        <input type="text" id="phone" placeholder="08012345678" required /><br><br>
+
+        <label>Select Network:</label><br>
+        <select id="network" required>
+          <option value="">-- Choose Network --</option>
+          <option value="mtn-data">MTN</option>
+          <option value="glo-data">Glo</option>
+          <option value="airtel-data">Airtel</option>
+          <option value="9mobile-data">9mobile</option>
+        </select><br><br>
+
+        <label>Bundle Plan:</label><br>
+        <select id="plan" required>
+          <option value="">-- Choose Plan --</option>
+          <option value="500MB">500MB</option>
+          <option value="1GB">1GB</option>
+          <option value="2GB">2GB</option>
+        </select><br><br>
+
+        <button type="submit">📶 Buy Data</button>
+      </form>
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 DitPay. All Rights Reserved.</p>
+  </footer>
+
+  <script>
+    const API_BASE = "https://dit-pay.onrender.com"; 
+
+    document.getElementById("dataForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const phone = document.getElementById("phone").value.trim();
+      const network = document.getElementById("network").value;
+      const plan = document.getElementById("plan").value;
+
+      if (!phone || !network || !plan) {
+        alert("Please fill all fields.");
+        return;
+      }
+
+      try {
+        const res = await fetch(`${API_BASE}/buy-data`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + localStorage.getItem("token")
+          },
+          body: JSON.stringify({ phone, network, plan })
+        });
+
+        const data = await res.json();
+        if (res.ok) {
+          alert(data.message + `\nNew Balance: ₦${data.new_balance}`);
+        } else {
+          alert(data.message || "❌ Data purchase failed");
+        }
+      } catch (err) {
+        console.error("❌ Error:", err);
+        alert("Server error, try again later.");
+      }
+    });
+  </script>
+</body>
+</html>
