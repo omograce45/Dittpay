@@ -1,280 +1,249 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>DitPay - Sign Up</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+<!DOCTYPE html>  <html lang="en">  
+<head>  
+  <meta charset="utf-8" />  
+  <meta name="viewport" content="width=device-width,initial-scale=1" />  
+  <title>DitPay - Sign Up</title>  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>    <style>  
+    /* === Loader Screen === */  
+    #loader {  
+      position: fixed;  
+      top: 0;  
+      left: 0;  
+      width: 100%;  
+      height: 100%;  
+      background: rgba(255, 255, 255, 0.95);  
+      display: flex;  
+      flex-direction: column;  
+      align-items: center;  
+      justify-content: center;  
+      z-index: 9999;  
+      font-family: Arial, sans-serif;  
+      opacity: 1;  
+      transition: opacity 0.8s ease;  
+    }  
+    #loader.fade-out {  
+      opacity: 0;  
+      pointer-events: none;  
+    }  
+    #loader i {  
+      font-size: 50px;  
+      color: #007BFF;  
+      animation: spin 1s linear infinite;  
+    }  
+    #loader p {  
+      margin-top: 15px;  
+      font-size: 18px;  
+      color: #003366;  
+      font-weight: bold;  
+    }  
+    @keyframes spin {  
+      0% { transform: rotate(0deg); }  
+      100% { transform: rotate(360deg); }  
+    }  
+  
+    /* Hide content until loaded */  
+    body.loaded .container,  
+    body.loaded header {  
+      display: block;  
+    }  
+    .container, header {  
+      display: none;  
+    }  
+  
+    /* === Page Background === */  
+    body {  
+      margin: 0;  
+      font-family: Arial, sans-serif;  
+      background: url("your-background.jpg") no-repeat center center fixed;  
+      background-size: cover;  
+      min-height: 100vh;  
+    }  
+  
+    /* === Centered Brand Header === */  
+    header {  
+      display: flex;  
+      justify-content: center;  
+      align-items: center;  
+      text-align: center;  
+      width: 100%;  
+      height: 80px;  
+      color: #0047ab;  
+      font-size: 32px;  
+      font-weight: 900;  
+      text-transform: uppercase;  
+      letter-spacing: 2px;  
+      text-shadow: 2px 2px 6px rgba(0,0,0,0.8);  
+    }  
+  
+    .container {  
+      max-width: 400px;  
+      margin: 50px auto;  
+      padding: 30px;  
+      background: rgba(255, 255, 255, 0.92);  
+      border-radius: 10px;  
+      box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.25);  
+    }  
+  
+    .container h2 {  
+      text-align: center;  
+      margin-bottom: 20px;  
+      color: #222;  
+    }  
+  
+    label {  
+      display: block;  
+      margin-top: 10px;  
+      font-weight: bold;  
+    }  
+  
+    input {  
+      width: 100%;  
+      padding: 10px;  
+      margin-top: 5px;  
+      border-radius: 5px;  
+      border: 1px solid #ccc;  
+    }  
+  
+    .password-wrapper {  
+      position: relative;  
+      display: flex;  
+      align-items: center;  
+    }  
+    .password-wrapper input {  
+      flex: 1;  
+      padding-right: 35px;  
+    }  
+    .password-wrapper i {  
+      position: absolute;  
+      right: 10px;  
+      cursor: pointer;  
+      color: #666;  
+    }  
+  
+    button {  
+      width: 100%;  
+      padding: 12px;  
+      margin-top: 20px;  
+      border: none;  
+      border-radius: 5px;  
+      background: #0047ab;  
+      color: white;  
+      font-size: 16px;  
+      cursor: pointer;  
+    }  
+    button:hover {  
+      background: #0056b3;  
+    }  
+  
+    .link {  
+      text-align: center;  
+      margin-top: 15px;  
+    }  
+    .link a {  
+      color: #007BFF;  
+      text-decoration: none;  
+    }  
+    .link a:hover {  
+      text-decoration: underline;  
+    }  
+  </style>  </head>  
+<body>    <!-- Loader -->    <div id="loader">  
+    <i class="fa-solid fa-rotate-right"></i>  
+    <p>Loading DitPay…</p>  
+  </div>    <header>  
+    DitPay  
+  </header>    <div class="container">  
+    <h2>Create an Account</h2>  
+    <form id="signupForm">  
+      <label for="fullname">Full Name</label>  
+      <input type="text" id="fullname" required />  <label for="email">Email Address</label>  
+  <input type="email" id="email" required />  
 
-  <style>
-    /* === Loader Screen === */
-    #loader {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(255, 255, 255, 0.95);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      z-index: 9999;
-      font-family: Arial, sans-serif;
-      opacity: 1;
-      transition: opacity 0.8s ease;
-    }
-    #loader.fade-out {
-      opacity: 0;
-      pointer-events: none;
-    }
-    #loader i {
-      font-size: 50px;
-      color: #007BFF;
-      animation: spin 1s linear infinite;
-    }
-    #loader p {
-      margin-top: 15px;
-      font-size: 18px;
-      color: #003366;
-      font-weight: bold;
-    }
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
+  <label for="phone">Phone Number</label>  
+  <input type="tel" id="phone" required />  
 
-    /* Hide content until loaded */
-    body.loaded .container,
-    body.loaded header {
-      display: block;
-    }
-    .container, header {
-      display: none;
-    }
+  <label for="password">Password</label>  
+  <div class="password-wrapper">  
+    <input type="password" id="password" required />  
+    <i id="togglePassword" class="fa-solid fa-eye"></i>  
+  </div>  
 
-    /* === Page Background === */
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: url("your-background.jpg") no-repeat center center fixed;
-      background-size: cover;
-      min-height: 100vh;
-    }
+  <label for="confirm">Confirm Password</label>  
+  <div class="password-wrapper">  
+    <input type="password" id="confirm" required />  
+    <i id="toggleConfirm" class="fa-solid fa-eye"></i>  
+  </div>  
 
-    /* === Centered Brand Header === */
-    header {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      width: 100%;
-      height: 80px;
-      color: #0047ab;
-      font-size: 32px;
-      font-weight: 900;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      text-shadow: 2px 2px 6px rgba(0,0,0,0.8);
-    }
+  <button type="submit">Sign Up</button>  
+</form>  
 
-    /* === Centered Signup Box === */
-    .container {
-      max-width: 400px;
-      width: 90%; /* makes it shrink on small screens */
-      padding: 30px;
-      background: rgba(255, 255, 255, 0.92);
-      border-radius: 10px;
-      box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.25);
+<div class="link">  
+  <p>Already have an account? <a href="login.html">Login</a></p>  
+</div>
 
-      /* Centering */
-      position: absolute;
-      top: 55%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-    }
-
-    /* Mobile fix */
-    @media (max-height: 600px) {
-      .container {
-        position: static;
-        margin: 100px auto 20px auto;
-        transform: none;
-      }
-    }
-
-    .container h2 {
-      text-align: center;
-      margin-bottom: 20px;
-      color: #222;
-    }
-
-    label {
-      display: block;
-      margin-top: 10px;
-      font-weight: bold;
-    }
-
-    input {
-      width: 100%;
-      padding: 10px;
-      margin-top: 5px;
-      border-radius: 5px;
-      border: 1px solid #ccc;
-    }
-
-    .password-wrapper {
-      position: relative;
-      display: flex;
-      align-items: center;
-    }
-    .password-wrapper input {
-      flex: 1;
-      padding-right: 35px;
-    }
-    .password-wrapper i {
-      position: absolute;
-      right: 10px;
-      cursor: pointer;
-      color: #666;
-    }
-
-    button {
-      width: 100%;
-      padding: 12px;
-      margin-top: 20px;
-      border: none;
-      border-radius: 5px;
-      background: #0047ab;
-      color: white;
-      font-size: 16px;
-      cursor: pointer;
-    }
-    button:hover {
-      background: #0056b3;
-    }
-
-    .link {
-      text-align: center;
-      margin-top: 15px;
-    }
-    .link a {
-      color: #007BFF;
-      text-decoration: none;
-    }
-    .link a:hover {
-      text-decoration: underline;
-    }
-  </style>
-</head>
-<body>
-
-  <!-- Loader -->
-  <div id="loader">
-    <i class="fa-solid fa-rotate-right"></i>
-    <p>Loading DitPay…</p>
-  </div>
-
-  <header>
-    DitPay
-  </header>
-
-  <div class="container">
-    <h2>Create an Account</h2>
-    <form id="signupForm">
-      <label for="fullname">Full Name</label>
-      <input type="text" id="fullname" required />
-
-      <label for="email">Email Address</label>
-      <input type="email" id="email" required />
-
-      <label for="phone">Phone Number</label>
-      <input type="tel" id="phone" required />
-
-      <label for="password">Password</label>
-      <div class="password-wrapper">
-        <input type="password" id="password" required />
-        <i id="togglePassword" class="fa-solid fa-eye"></i>
-      </div>
-
-      <label for="confirm">Confirm Password</label>
-      <div class="password-wrapper">
-        <input type="password" id="confirm" required />
-        <i id="toggleConfirm" class="fa-solid fa-eye"></i>
-      </div>
-
-      <button type="submit">Sign Up</button>
-    </form>
-
-    <div class="link">
-      <p>Already have an account? <a href="login.html">Login</a></p>
-    </div>
-  </div>
-
-  <script>
-    // Loader fade-out
-    window.addEventListener("load", () => {
-      const loader = document.getElementById("loader");
-      document.body.classList.add("loaded");
-      loader.classList.add("fade-out");
-      setTimeout(() => {
-        loader.style.display = "none";
-      }, 800);
-    });
-
-    // Toggle password visibility
-    const togglePassword = document.getElementById("togglePassword");
-    const toggleConfirm = document.getElementById("toggleConfirm");
-    const passwordInput = document.getElementById("password");
-    const confirmInput = document.getElementById("confirm");
-
-    togglePassword.addEventListener("click", () => {
-      const type = passwordInput.getAttribute("type") === "password" ? "text" : "password";
-      passwordInput.setAttribute("type", type);
-      togglePassword.classList.toggle("fa-eye");
-      togglePassword.classList.toggle("fa-eye-slash");
-    });
-
-    toggleConfirm.addEventListener("click", () => {
-      const type = confirmInput.getAttribute("type") === "password" ? "text" : "password";
-      confirmInput.setAttribute("type", type);
-      toggleConfirm.classList.toggle("fa-eye");
-      toggleConfirm.classList.toggle("fa-eye-slash");
-    });
-
-    // Signup form handler
-    document.getElementById('signupForm').addEventListener('submit', async function(e){
-      e.preventDefault();
-
-      const fullname = document.getElementById('fullname').value.trim();
-      const email = document.getElementById('email').value.trim();
-      const phone = document.getElementById('phone').value.trim();
-      const password = document.getElementById('password').value;
-      const confirm = document.getElementById('confirm').value;
-
-      if (password !== confirm) {
-        alert('Passwords do not match!');
-        return;
-      }
-
-      try {
-        const res = await fetch('https://dit-pay.onrender.com/signup', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ fullname, email, phone, password })
-        });
-
-        const data = await res.json();
-        alert(data.message);
-
-        if (res.ok) {
-          window.location.href = 'login.html';
-        }
-      } catch (err) {
-        alert('❌ Error connecting to server.');
-        console.error(err);
-      }
-    });
-  </script>
-</body>
-</html>
+  </div>    <script>  
+    // Loader fade-out  
+    window.addEventListener("load", () => {  
+      const loader = document.getElementById("loader");  
+      document.body.classList.add("loaded");  
+      loader.classList.add("fade-out");  
+      setTimeout(() => {  
+        loader.style.display = "none";  
+      }, 800);  
+    });  
+  
+    // Toggle password visibility  
+    const togglePassword = document.getElementById("togglePassword");  
+    const toggleConfirm = document.getElementById("toggleConfirm");  
+    const passwordInput = document.getElementById("password");  
+    const confirmInput = document.getElementById("confirm");  
+  
+    togglePassword.addEventListener("click", () => {  
+      const type = passwordInput.getAttribute("type") === "password" ? "text" : "password";  
+      passwordInput.setAttribute("type", type);  
+      togglePassword.classList.toggle("fa-eye");  
+      togglePassword.classList.toggle("fa-eye-slash");  
+    });  
+  
+    toggleConfirm.addEventListener("click", () => {  
+      const type = confirmInput.getAttribute("type") === "password" ? "text" : "password";  
+      confirmInput.setAttribute("type", type);  
+      toggleConfirm.classList.toggle("fa-eye");  
+      toggleConfirm.classList.toggle("fa-eye-slash");  
+    });  
+  
+    // Signup form handler  
+    document.getElementById('signupForm').addEventListener('submit', async function(e){  
+      e.preventDefault();  
+  
+      const fullname = document.getElementById('fullname').value.trim();  
+      const email = document.getElementById('email').value.trim();  
+      const phone = document.getElementById('phone').value.trim();  
+      const password = document.getElementById('password').value;  
+      const confirm = document.getElementById('confirm').value;  
+  
+      if (password !== confirm) {  
+        alert('Passwords do not match!');  
+        return;  
+      }  
+  
+      try {  
+        const res = await fetch('https://dit-pay.onrender.com/signup', {  
+          method: 'POST',  
+          headers: { 'Content-Type': 'application/json' },  
+          body: JSON.stringify({ fullname, email, phone, password })  
+        });  
+  
+        const data = await res.json();  
+        alert(data.message);  
+  
+        if (res.ok) {  
+          window.location.href = 'login.html';  
+        }  
+      } catch (err) {  
+        alert('❌ Error connecting to server.');  
+        console.error(err);  
+      }  
+    });  
+  </script>  </body>  
+  </html>  
