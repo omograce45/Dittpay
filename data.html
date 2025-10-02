@@ -28,10 +28,10 @@
         <label>Select Network:</label><br>
         <select id="network" required>
           <option value="">-- Choose Network --</option>
-          <option value="mtn-data">MTN</option>
-          <option value="glo-data">Glo</option>
-          <option value="airtel-data">Airtel</option>
-          <option value="9mobile-data">9mobile</option>
+          <option value="mtn">MTN</option>
+          <option value="glo">Glo</option>
+          <option value="airtel">Airtel</option>
+          <option value="9mobile">9mobile</option>
         </select><br><br>
 
         <label>Bundle Plan:</label><br>
@@ -52,10 +52,11 @@
   </footer>
 
   <script>
-    const API_BASE = "https://dit-pay.onrender.com"; 
+    const API_BASE = "https://dit-pay.onrender.com"; // Your backend URL
 
     document.getElementById("dataForm").addEventListener("submit", async (e) => {
       e.preventDefault();
+
       const phone = document.getElementById("phone").value.trim();
       const network = document.getElementById("network").value;
       const plan = document.getElementById("plan").value;
@@ -77,7 +78,7 @@
 
         const data = await res.json();
         if (res.ok) {
-          alert(data.message + `\nNew Balance: ₦${data.new_balance}`);
+          alert(`${data.message}\nNew Balance: ₦${data.newBalance}`);
         } else {
           alert(data.message || "❌ Data purchase failed");
         }
@@ -88,4 +89,4 @@
     });
   </script>
 </body>
-</html>
+  </html>
