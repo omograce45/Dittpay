@@ -80,9 +80,9 @@
     async function verifyMeter() {
       const meter = document.getElementById("meter").value.trim();
       const disco = document.getElementById("disco").value;
-      const type = document.getElementById("type").value;
+      const type = document.getElementById("meterType").value;
 
-      if (!meter || !disco || !type) {
+      if (!meter || !disco || !meterType) {
         alert("⚠️ Enter Meter Number, DisCo, and Type before verifying.");
         return;
       }
@@ -94,7 +94,7 @@
             "Content-Type": "application/json",
             "Authorization": "Bearer " + localStorage.getItem("token")
           },
-          body: JSON.stringify({ meter, disco, type })
+          body: JSON.stringify({ meter, disco, meterType })
         });
 
         const data = await res.json();
@@ -115,11 +115,11 @@
 
       const meter = document.getElementById("meter").value.trim();
       const disco = document.getElementById("disco").value;
-      const type = document.getElementById("type").value;
+      const type = document.getElementById("meterType").value;
       const phone = document.getElementById("phone").value.trim();
       const amount = document.getElementById("amount").value;
 
-      if (!meter || !disco || !type || !phone || !amount) {
+      if (!meter || !disco || !meterType || !phone || !amount) {
         alert("⚠️ Please fill all fields.");
         return;
       }
@@ -131,7 +131,7 @@
             "Content-Type": "application/json",
             "Authorization": "Bearer " + localStorage.getItem("token")
           },
-          body: JSON.stringify({ meter, disco, type, phone, amount: parseFloat(amount) })
+          body: JSON.stringify({ meter, disco, meterType, phone, amount: parseFloat(amount) })
         });
 
         const data = await res.json();
