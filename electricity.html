@@ -82,9 +82,9 @@
       const disco = document.getElementById("disco").value;
       const meterType = document.getElementById("type").value; // ✅ fixed
 
-      if (!meter || !disco || !meterType) {
+      if (!meter || !disco || !type) {
         alert("⚠️ Enter Meter Number, DisCo, and Type before verifying.");
-        return;
+        return;q
       }
 
       try {
@@ -94,7 +94,7 @@
             "Content-Type": "application/json",
             "Authorization": "Bearer " + localStorage.getItem("token")
           },
-          body: JSON.stringify({ meter, disco, meterType }) // ✅ send correct fields
+          body: JSON.stringify({ meter, disco, type }) // ✅ send correct fields
         });
 
         const data = await res.json();
@@ -119,7 +119,7 @@
       const phone = document.getElementById("phone").value.trim();
       const amount = document.getElementById("amount").value;
 
-      if (!meter || !disco || !meterType || !phone || !amount) {
+      if (!meter || !disco || !type || !phone || !amount) {
         alert("⚠️ Please fill all fields.");
         return;
       }
@@ -131,7 +131,7 @@
             "Content-Type": "application/json",
             "Authorization": "Bearer " + localStorage.getItem("token")
           },
-          body: JSON.stringify({ meter, disco, meterType, phone, amount: parseFloat(amount) }) // ✅ send correct fields
+          body: JSON.stringify({ meter, disco, type, phone, amount: parseFloat(amount) }) // ✅ send correct fields
         });
 
         const data = await res.json();
