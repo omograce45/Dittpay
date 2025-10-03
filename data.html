@@ -3,108 +3,144 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DitPay - Buy Data</title>
-  <link rel="stylesheet" href="style.css">
+  <title>Buy Data</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; }
+    label { font-weight: bold; display: block; margin-top: 10px; }
+    select, input, button { padding: 10px; margin: 10px 0; width: 100%; }
+    .result { margin-top: 20px; font-weight: bold; }
+  </style>
 </head>
 <body>
-  <header>
-    <h1>DitPay - Buy Data</h1>
-    <nav>
-      <a href="dashboard.html">Home</a>
-      <a href="wallet.html">Wallet</a>
-      <a href="transactions.html">Transactions</a>
-      <a href="profile.html">Profile</a>
-    </nav>
-  </header>
+  <h2>Buy Data</h2>
 
-  <main class="content">
-    <div class="container">
-      <h2>Data Purchase</h2>
+  <label>Phone Number</label>
+  <input type="text" id="phone" placeholder="Enter phone number">
 
-      <form id="buyDataForm">
-        <!-- Phone -->
-        <label for="phone">Phone Number:</label>
-        <input type="text" id="phone" name="phone" placeholder="08012345678" required><br><br>
+  <label>Network</label>
+  <select id="network" onchange="loadPlans()">
+    <option value="">-- Select Network --</option>
+    <option value="01">MTN</option>
+    <option value="02">Glo</option>
+    <option value="03">9mobile</option>
+    <option value="04">Airtel</option>
+  </select>
 
-        <!-- Network -->
-        <label for="network">Select Network:</label>
-        <select id="network" name="network" required>
-          <option value="">-- Select Network --</option>
-          <option value="01">MTN</option>
-          <option value="02">Glo</option>
-          <option value="03">Airtel</option>
-          <option value="04">9mobile</option>
-        </select><br><br>
+  <label>Search Plans</label>
+  <input type="text" id="searchPlan" placeholder="Search e.g. 3GB, 500MB" onkeyup="filterPlans()">
 
-        <!-- Plan -->
-        <label for="plan">Select Plan:</label>
-        <select id="plan" name="plan" required>
-          <option value="">-- Select Plan --</option>
+  <label>Plan</label>
+  <select id="plan">
+    <option value="">-- Select Plan --</option>
+  </select>
 
-          <!-- MTN Sample -->
-          <option value="500">MTN 500MB - ₦100</option>
-          <option value="1000">MTN 1GB - ₦200</option>
-          <option value="2000">MTN 2GB - ₦350</option>
-          <option value="5000">MTN 5GB - ₦1000</option>
+  <button onclick="buyData()">Buy Now</button>
 
-          <!-- GLO Sample -->
-          <option value="glo500">GLO 500MB - ₦120</option>
-          <option value="glo1000">GLO 1GB - ₦220</option>
-
-          <!-- Airtel Sample -->
-          <option value="airtel500">Airtel 500MB - ₦110</option>
-          <option value="airtel1000">Airtel 1GB - ₦500</option>
-
-          <!-- 9mobile Sample -->
-          <option value="9mobile500">9mobile 500MB - ₦115</option>
-          <option value="9mobile1000">9mobile 1GB - ₦205</option>
-        </select><br><br>
-
-        <button type="submit">📶 Buy Data</button>
-      </form>
-    </div>
-  </main>
-
-  <footer>
-    <p>&copy; 2025 DitPay. All Rights Reserved.</p>
-  </footer>
+  <div class="result" id="result"></div>
 
   <script>
-    const API_BASE = "https://dit-pay.onrender.com"; // 🔹 Your backend URL
+    // ✅ All plans (shortened to key examples, can be fully expanded)
+    const plansByNetwork = {
+      "01": [ // MTN
+        { code: "500.0", name: "500MB - N424 (30 days SME)" },
+        { code: "1000.0", name: "1GB - N595 (30 days SME)" },
+        { code: "2000.0", name: "2GB - N1189 (30 days SME)" },
+        { code: "3000.0", name: "3GB - N1680 (30 days SME)" },
+        { code: "5000.0", name: "5GB - N2540 (30 days SME)" },
+        { code: "18000.01", name: "75GB - N17460 (30 days)" },
+        { code: "35000.01", name: "165GB - N33950 (30 days)" }
+      ],
+      "02": [ // Glo
+        { code: "1000", name: "1GB - N470 (30 days SME)" },
+        { code: "2000", name: "2GB - N940 (30 days SME)" },
+        { code: "5000", name: "5GB - N2350 (30 days SME)" },
+        { code: "10000", name: "10GB - N4700 (30 days SME)" },
+        { code: "30000.01", name: "165GB - N28650 (30 days)" },
+        { code: "50000.01", name: "320GB - N47750 (30 days)" }
+      ],
+      "03": [ // 9mobile
+        { code: "100.01", name: "100MB - N93 (1 day)" },
+        { code: "1000.01", name: "1.1GB - N930 (30 days)" },
+        { code: "2000.01", name: "2.44GB - N1860 (30 days)" },
+        { code: "5000.01", name: "6.5GB - N4650 (30 days)" },
+        { code: "12000.01", name: "16GB - N11160 (30 days)" },
+        { code: "150000.01", name: "190GB - N139500 (180 days)" }
+      ],
+      "04": [ // Airtel
+        { code: "1499.93", name: "2GB - N1451.93 (30 days)" },
+        { code: "1999.91", name: "3GB - N1935.91 (30 days)" },
+        { code: "2499.92", name: "4GB - N2419.92 (30 days)" },
+        { code: "4999.92", name: "13GB - N4839.92 (30 days)" },
+        { code: "14999.91", name: "60GB - N14519.91 (30 days)" },
+        { code: "29999.91", name: "160GB - N29039.91 (30 days)" }
+      ]
+    };
 
-    document.getElementById("buyDataForm").addEventListener("submit", async (e) => {
-      e.preventDefault();
+    // ✅ Load plans for selected network
+    function loadPlans() {
+      const network = document.getElementById("network").value;
+      const planSelect = document.getElementById("plan");
+      planSelect.innerHTML = '<option value="">-- Select Plan --</option>';
 
-      const phone = document.getElementById("phone").value.trim();
+      if (plansByNetwork[network]) {
+        plansByNetwork[network].forEach(p => {
+          const opt = document.createElement("option");
+          opt.value = p.code;
+          opt.textContent = p.name;
+          planSelect.appendChild(opt);
+        });
+      }
+      document.getElementById("searchPlan").value = "";
+    }
+
+    // ✅ Search/filter plans
+    function filterPlans() {
+      const searchValue = document.getElementById("searchPlan").value.toLowerCase();
+      const network = document.getElementById("network").value;
+      const planSelect = document.getElementById("plan");
+
+      planSelect.innerHTML = '<option value="">-- Select Plan --</option>';
+
+      if (plansByNetwork[network]) {
+        plansByNetwork[network]
+          .filter(p => p.name.toLowerCase().includes(searchValue))
+          .forEach(p => {
+            const opt = document.createElement("option");
+            opt.value = p.code;
+            opt.textContent = p.name;
+            planSelect.appendChild(opt);
+          });
+      }
+    }
+
+    // ✅ Buy data
+    async function buyData() {
+      const phone = document.getElementById("phone").value;
       const network = document.getElementById("network").value;
       const plan = document.getElementById("plan").value;
+      const token = localStorage.getItem("token");
 
       if (!phone || !network || !plan) {
-        alert("⚠️ Please fill all fields.");
+        document.getElementById("result").innerText = "⚠️ Fill all fields.";
         return;
       }
 
       try {
-        const res = await fetch(`${API_BASE}/buy-data`, {
+        const res = await fetch("/buy-data", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            "Authorization": "Bearer " + localStorage.getItem("token") // user must be logged in
+            "Authorization": "Bearer " + token
           },
           body: JSON.stringify({ phone, network, plan })
         });
 
         const data = await res.json();
-        if (res.ok) {
-          alert(`${data.message}\nNew Balance: ₦${data.newBalance}`);
-        } else {
-          alert(data.message || "❌ Data purchase failed");
-        }
+        document.getElementById("result").innerText = data.message || "Done!";
       } catch (err) {
-        console.error("❌ Error:", err);
-        alert("Server error, try again later.");
+        document.getElementById("result").innerText = "❌ Error: " + err.message;
       }
-    });
+    }
   </script>
 </body>
 </html>
