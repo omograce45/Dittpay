@@ -80,7 +80,7 @@
     async function verifyMeter() {
       const meter = document.getElementById("meter").value.trim();
       const disco = document.getElementById("disco").value;
-      const type = document.getElementById("meterType").value;
+      const meterType = document.getElementById("type").value; // ✅ fixed
 
       if (!meter || !disco || !meterType) {
         alert("⚠️ Enter Meter Number, DisCo, and Type before verifying.");
@@ -94,13 +94,13 @@
             "Content-Type": "application/json",
             "Authorization": "Bearer " + localStorage.getItem("token")
           },
-          body: JSON.stringify({ meter, disco, meterType })
+          body: JSON.stringify({ meter, disco, meterType }) // ✅ send correct fields
         });
 
         const data = await res.json();
         if (res.ok) {
           document.getElementById("verifyResult").innerText = 
-            `✅ Verified: ${data.customer_name || 'Unknown'} (Meter: ${meter})`;
+            `✅ Verified: ${data.customerName || 'Unknown'} (Meter: ${meter})`;
         } else {
           document.getElementById("verifyResult").innerText = "❌ " + (data.message || "Verification failed");
         }
@@ -115,7 +115,7 @@
 
       const meter = document.getElementById("meter").value.trim();
       const disco = document.getElementById("disco").value;
-      const type = document.getElementById("meterType").value;
+      const meterType = document.getElementById("type").value; // ✅ fixed
       const phone = document.getElementById("phone").value.trim();
       const amount = document.getElementById("amount").value;
 
@@ -131,7 +131,7 @@
             "Content-Type": "application/json",
             "Authorization": "Bearer " + localStorage.getItem("token")
           },
-          body: JSON.stringify({ meter, disco, meterType, phone, amount: parseFloat(amount) })
+          body: JSON.stringify({ meter, disco, meterType, phone, amount: parseFloat(amount) }) // ✅ send correct fields
         });
 
         const data = await res.json();
