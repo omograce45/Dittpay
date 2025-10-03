@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>DitPay - Wallet</title>
   <link rel="stylesheet" href="style.css" />
-  <!-- ✅ Paystack script -->
+  <!-- Paystack script -->
   <script src="https://js.paystack.co/v1/inline.js"></script>
 </head>
 <body>
@@ -23,7 +23,10 @@
     <div class="container">
       <h2>Your Wallet</h2>
       <p><strong>Balance:</strong> ₦<span id="balance">0.00</span></p>
+
+      <!-- Buttons -->
       <button onclick="fundWallet()">💳 Fund Wallet</button>
+      <button onclick="addTestFunds()">🧪 Add Test Funds</button>
       <button onclick="loadWallet()">🔄 Refresh Balance</button>
     </div>
   </main>
@@ -33,7 +36,7 @@
   </footer>
 
   <script>
-    const API_BASE = "https://dit-pay.onrender.com"; // ✅ Your Render API URL
+    const API_BASE = "https://dit-pay.onrender.com"; // Your backend API URL
 
     // ✅ Load Wallet Balance
     async function loadWallet() {
@@ -54,27 +57,23 @@
       }
     }
 
-    // ✅ Fund Wallet with Paystack
+    // ✅ Fund Wallet via Paystack
     async function fundWallet() {
       const amount = prompt("Enter amount to fund (₦):");
       if (!amount) return;
 
-      // ✅ Safety check
       if (typeof PaystackPop === "undefined") {
-        alert("Paystack script not loaded. Check internet/HTTPS.");
-        console.error("❌ PaystackPop is undefined. Script failed to load.");
+        alert("Paystack script not loaded.");
         return;
       }
 
       let handler = PaystackPop.setup({
-        key: "pk_live_a58e433c09f1575cb5d7517ccfed4eb3ce3aab7b", // 🔑 Your PUBLIC key
+        key: "pk_live_a58e433c09f1575cb5d7517ccfed4eb3ce3aab7b", // Public key
         email: localStorage.getItem("userEmail") || "customer@example.com",
         amount: parseFloat(amount) * 100, // convert to kobo
         currency: "NGN",
-        ref: "DITPAY-" + Date.now(), // unique transaction reference
+        ref: "DITPAY-" + Date.now(),
         callback: async function(response) {
-          console.log("✅ Paystack response:", response);
-
           try {
             const res = await fetch(`${API_BASE}/wallet/fund`, {
               method: "POST",
@@ -90,19 +89,13 @@
 
             const data = await res.json();
             alert(data.message);
-
-            if (res.ok) {
-              loadWallet();
-            } else {
-              console.error("Wallet fund failed:", data);
-            }
+            if (res.ok) loadWallet();
           } catch (err) {
-            console.error("❌ Error verifying payment:", err);
+            console.error("Error verifying payment:", err);
             alert("Error verifying payment.");
           }
         },
         onClose: function() {
-          console.warn("⚠️ Transaction was not completed.");
           alert("Transaction was not completed.");
         }
       });
@@ -110,7 +103,35 @@
       handler.openIframe();
     }
 
-    // Load balance on page load
+    // ✅ Add Test Funds (no real payment)
+    async function addTestFunds() {
+      const amount = prompt("Enter test amount (₦):");
+      if (!amount || isNaN(amount) || amount <= 0) {
+        alert("Enter a valid amount.");
+        return;
+      }
+
+      try {
+        const res = await fetch(`${API_BASE}/wallet/fund`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + localStorage.getItem("token")
+          },
+          body: JSON.stringify({ amount: parseFloat(amount) })
+        });
+
+        const data = await res.json();
+        alert(data.message);
+        if (res.ok) loadWallet();
+        else console.error("Add test funds failed:", data);
+      } catch (err) {
+        console.error("Error adding test funds:", err);
+        alert("Error adding test funds.");
+      }
+    }
+
+    // Load wallet balance on page load
     loadWallet();
   </script>
 </body>
