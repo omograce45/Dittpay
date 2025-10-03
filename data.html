@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>DitPay - Buy Data</title>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <header>
-    <h1>Buy Data</h1>
+    <h1>DitPay - Buy Data</h1>
     <nav>
       <a href="dashboard.html">Home</a>
       <a href="wallet.html">Wallet</a>
@@ -21,26 +21,43 @@
     <div class="container">
       <h2>Data Purchase</h2>
 
-      <form id="dataForm">
-        <label>Phone Number:</label><br>
-        <input type="text" id="phone" placeholder="08012345678" required /><br><br>
+      <form id="buyDataForm">
+        <!-- Phone -->
+        <label for="phone">Phone Number:</label>
+        <input type="text" id="phone" name="phone" placeholder="08012345678" required><br><br>
 
-        <label>Select Network:</label><br>
-        <select id="network" required>
-          <option value="">-- Choose Network --</option>
-          <option value="mtn">MTN</option>
-          <option value="glo">Glo</option>
-          <option value="airtel">Airtel</option>
-          <option value="9mobile">9mobile</option>
+        <!-- Network -->
+        <label for="network">Select Network:</label>
+        <select id="network" name="network" required>
+          <option value="">-- Select Network --</option>
+          <option value="01">MTN</option>
+          <option value="02">Glo</option>
+          <option value="03">Airtel</option>
+          <option value="04">9mobile</option>
         </select><br><br>
 
-        <label>Bundle Plan:</label><br>
-        <select id="plan" required>
-          <option value="">-- Choose Plan --</option>
-          <option value="100MB">100MB</option>
-          <option value="500MB">500MB</option>
-          <option value="1GB">1GB</option>
-          <option value="2GB">2GB</option>
+        <!-- Plan -->
+        <label for="plan">Select Plan:</label>
+        <select id="plan" name="plan" required>
+          <option value="">-- Select Plan --</option>
+
+          <!-- MTN Sample -->
+          <option value="500">MTN 500MB - ₦100</option>
+          <option value="1000">MTN 1GB - ₦200</option>
+          <option value="2000">MTN 2GB - ₦350</option>
+          <option value="5000">MTN 5GB - ₦1000</option>
+
+          <!-- GLO Sample -->
+          <option value="glo500">GLO 500MB - ₦120</option>
+          <option value="glo1000">GLO 1GB - ₦220</option>
+
+          <!-- Airtel Sample -->
+          <option value="airtel500">Airtel 500MB - ₦110</option>
+          <option value="airtel1000">Airtel 1GB - ₦210</option>
+
+          <!-- 9mobile Sample -->
+          <option value="9mobile500">9mobile 500MB - ₦115</option>
+          <option value="9mobile1000">9mobile 1GB - ₦205</option>
         </select><br><br>
 
         <button type="submit">📶 Buy Data</button>
@@ -53,9 +70,9 @@
   </footer>
 
   <script>
-    const API_BASE = "https://dit-pay.onrender.com"; // Your backend URL
+    const API_BASE = "https://dit-pay.onrender.com"; // 🔹 Your backend URL
 
-    document.getElementById("dataForm").addEventListener("submit", async (e) => {
+    document.getElementById("buyDataForm").addEventListener("submit", async (e) => {
       e.preventDefault();
 
       const phone = document.getElementById("phone").value.trim();
@@ -63,7 +80,7 @@
       const plan = document.getElementById("plan").value;
 
       if (!phone || !network || !plan) {
-        alert("Please fill all fields.");
+        alert("⚠️ Please fill all fields.");
         return;
       }
 
@@ -72,7 +89,7 @@
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            "Authorization": "Bearer " + localStorage.getItem("token")
+            "Authorization": "Bearer " + localStorage.getItem("token") // user must be logged in
           },
           body: JSON.stringify({ phone, network, plan })
         });
@@ -90,4 +107,4 @@
     });
   </script>
 </body>
-  </html>
+</html>
