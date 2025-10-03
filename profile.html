@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>DitPay - Profile</title>
   <link rel="stylesheet" href="style.css" />
 </head>
@@ -17,14 +17,14 @@
     </nav>
   </header>
 
-  <!-- Main content wrapper -->
   <main class="content">
     <div class="container">
       <h2>Your Profile</h2>
-      <p id="name"><strong>Name:</strong> Loading...</p>
-      <p id="email"><strong>Email:</strong> Loading...</p>
-      <p id="phone"><strong>Phone:</strong> Loading...</p>
-      <button onclick="window.location.href='dashboard.html'">Back to Dashboard</button>
+      <p>Full Name: <span id="fullname">Loading...</span></p>
+      <p>Email: <span id="email">Loading...</span></p>
+      <p>Phone: <span id="phone">Loading...</span></p>
+      <p>Wallet Balance: ₦<span id="wallet">0.00</span></p>
+      <button onclick="loadProfile()">🔄 Refresh Profile</button>
     </div>
   </main>
 
@@ -33,41 +33,46 @@
   </footer>
 
   <script>
-    function logout() {
-      localStorage.removeItem("token");
-      window.location.href = "index.html";
-    }
+    const API_BASE = "https://dit-pay.onrender.com"; // Your backend URL
 
     async function loadProfile() {
-      try {
-        const token = localStorage.getItem("token");
-        if (!token) {
-          alert("No token found. Please log in again.");
-          window.location.href = "index.html";
-          return;
-        }
+      const token = localStorage.getItem("token");
+      if (!token) {
+        alert("No token found. Please login first.");
+        return;
+      }
 
-        const res = await fetch("https://dit-pay.onrender.com/profile", {
+      try {
+        const res = await fetch(`${API_BASE}/profile`, {
           headers: { "Authorization": "Bearer " + token }
         });
 
-        if (res.ok) {
-          const data = await res.json();
-          document.getElementById("name").innerHTML = "<strong>Name:</strong> " + (data.name || "N/A");
-          document.getElementById("email").innerHTML = "<strong>Email:</strong> " + (data.email || "N/A");
-          document.getElementById("phone").innerHTML = "<strong>Phone:</strong> " + (data.phone || "N/A");
-        } else if (res.status === 401 || res.status === 403) {
-          alert("Session expired. Please log in again.");
-          logout();
-        } else {
-          alert("Unable to fetch profile data.");
+        if (res.status === 401 || res.status === 403) {
+          alert("Session expired. Please login again.");
+          return;
         }
+
+        if (!res.ok) {
+          console.error("Failed to fetch profile:", res.status);
+          alert("Failed to load profile.");
+          return;
+        }
+
+        const data = await res.json();
+
+        // Populate profile fields
+        document.getElementById("fullname").innerText = data.fullname || "-";
+        document.getElementById("email").innerText = data.email || "-";
+        document.getElementById("phone").innerText = data.phone || "-";
+        document.getElementById("wallet").innerText = data.wallet_balance ?? "0.00";
+
       } catch (err) {
-        console.error("Profile fetch error:", err);
-        alert("Error loading profile.");
+        console.error("Error fetching profile:", err);
+        alert("Error loading profile. Check console for details.");
       }
     }
 
+    // Load profile on page load
     loadProfile();
   </script>
 </body>
