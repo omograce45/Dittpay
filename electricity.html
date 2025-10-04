@@ -22,10 +22,10 @@
       <h2>Electricity Bill Payment</h2>
 
       <form id="electricityForm">
-        <label for="meter">Meter Number:</label><br>
+        <label>Meter Number:</label><br>
         <input type="text" id="meter" placeholder="1234567890" required /><br><br>
 
-        <label for="disco">DisCo Provider:</label><br>
+        <label>DisCo Provider:</label><br>
         <select id="disco" required>
           <option value="">-- Choose Provider --</option>
           <option value="01">Eko Electric - EKEDC</option>
@@ -42,17 +42,17 @@
           <option value="12">Aba Electric - APLE</option>
         </select><br><br>
 
-        <label for="meterType">Meter Type:</label><br>
+        <label>Meter Type:</label><br>
         <select id="meterType" required>
           <option value="">-- Select Type --</option>
           <option value="01">Prepaid</option>
           <option value="02">Postpaid</option>
         </select><br><br>
 
-        <label for="phone">Phone Number:</label><br>
+        <label>Phone Number:</label><br>
         <input type="text" id="phone" placeholder="08012345678" required /><br><br>
 
-        <label for="amount">Amount (₦):</label><br>
+        <label>Amount (₦):</label><br>
         <input type="number" id="amount" min="500" required /><br><br>
 
         <button type="button" onclick="verifyMeter()">🔎 Verify Meter</button>
@@ -82,9 +82,7 @@
       try {
         const res = await fetch(`${API_BASE}/verify-meter?meter=${meter}&disco=${disco}`, {
           method: "GET",
-          headers: {
-            "Authorization": "Bearer " + localStorage.getItem("token")
-          }
+          headers: { "Authorization": "Bearer " + localStorage.getItem("token") }
         });
 
         const data = await res.json();
@@ -113,11 +111,13 @@
       }
 
       try {
-        const res = await fetch(`${API_BASE}/pay-electricity?meter=${meter}&disco=${disco}&meterType=${meterType}&phone=${phone}&amount=${amount}`, {
-          method: "GET",
+        const res = await fetch(`${API_BASE}/pay-electricity`, {
+          method: "POST",
           headers: {
+            "Content-Type": "application/json",
             "Authorization": "Bearer " + localStorage.getItem("token")
-          }
+          },
+          body: JSON.stringify({ meter, disco, meterType, phone, amount: parseFloat(amount) })
         });
 
         const data = await res.json();
@@ -132,4 +132,4 @@
     });
   </script>
 </body>
-                                                 </html>
+  </html>
