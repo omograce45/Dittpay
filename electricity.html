@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>DitPay - Pay Electricity</title>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <header>
@@ -22,10 +22,12 @@
       <h2>Electricity Bill Payment</h2>
 
       <form id="electricityForm">
-        <label>Meter Number:</label><br>
-        <input type="text" id="meter" placeholder="1234567890" required /><br><br>
+        <!-- Meter Number -->
+        <label>Meter Number:</label>
+        <input type="text" id="meter" placeholder="1234567890" required><br><br>
 
-        <label>DisCo Provider:</label><br>
+        <!-- DisCo Provider -->
+        <label>DisCo:</label>
         <select id="disco" required>
           <option value="">-- Choose Provider --</option>
           <option value="01">Eko Electric - EKEDC</option>
@@ -42,19 +44,23 @@
           <option value="12">Aba Electric - APLE</option>
         </select><br><br>
 
-        <label>Meter Type:</label><br>
+        <!-- Meter Type -->
+        <label>Meter Type:</label>
         <select id="meterType" required>
           <option value="">-- Select Type --</option>
           <option value="01">Prepaid</option>
           <option value="02">Postpaid</option>
         </select><br><br>
 
-        <label>Phone Number:</label><br>
-        <input type="text" id="phone" placeholder="08012345678" required /><br><br>
+        <!-- Phone Number -->
+        <label>Phone Number:</label>
+        <input type="text" id="phone" placeholder="08012345678" required><br><br>
 
-        <label>Amount (₦):</label><br>
-        <input type="number" id="amount" min="500" required /><br><br>
+        <!-- Amount -->
+        <label>Amount (₦):</label>
+        <input type="number" id="amount" min="500" required><br><br>
 
+        <!-- Verify & Pay -->
         <button type="button" onclick="verifyMeter()">🔎 Verify Meter</button>
         <button type="submit">💡 Pay Electricity</button>
       </form>
@@ -73,24 +79,26 @@
     async function verifyMeter() {
       const meter = document.getElementById("meter").value.trim();
       const disco = document.getElementById("disco").value;
+      const meterType = document.getElementById("meterType").value;
 
-      if (!meter || !disco) {
-        alert("⚠️ Enter Meter Number and DisCo before verifying.");
+      if (!meter || !disco || !meterType) {
+        alert("⚠️ Fill all fields before verifying.");
         return;
       }
 
       try {
-        const res = await fetch(`${API_BASE}/verify-meter?meter=${meter}&disco=${disco}`, {
-          method: "GET",
-          headers: { "Authorization": "Bearer " + localStorage.getItem("token") }
+        const res = await fetch(`${API_BASE}/verify-meter`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + localStorage.getItem("token")
+          },
+          body: JSON.stringify({ meter, disco, meterType })
         });
-
         const data = await res.json();
-        if (res.ok) {
-          document.getElementById("verifyResult").innerText = `✅ Verified: ${data.customer_name}`;
-        } else {
-          document.getElementById("verifyResult").innerText = `❌ ${data.message}`;
-        }
+        document.getElementById("verifyResult").innerText = data.customer_name 
+          ? `✅ Verified: ${data.customer_name}` 
+          : `❌ ${data.message}`;
       } catch (err) {
         document.getElementById("verifyResult").innerText = "❌ Error: " + err.message;
       }
@@ -117,19 +125,15 @@
             "Content-Type": "application/json",
             "Authorization": "Bearer " + localStorage.getItem("token")
           },
-          body: JSON.stringify({ meter, disco, meterType, phone, amount: parseFloat(amount) })
+          body: JSON.stringify({ meter, disco, meterType, phone, amount })
         });
 
         const data = await res.json();
-        if (res.ok) {
-          alert(`✅ ${data.message}\nNew Balance: ₦${data.new_balance}`);
-        } else {
-          alert(`❌ ${data.message}`);
-        }
+        alert(data.message || "❌ Payment failed\nCheck your inputs and wallet balance");
       } catch (err) {
         alert("❌ Error: " + err.message);
       }
     });
   </script>
 </body>
-  </html>
+          </html>
