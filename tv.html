@@ -36,18 +36,18 @@
         <label>Package:</label><br>
         <select id="package" required>
           <option value="">-- Choose Package --</option>
-          <option value="dstv-padi">DSTV Padi - ₦4,400</option>
-          <option value="dstv-yanga">DSTV Yanga - ₦6,000</option>
-          <option value="gotv-jinja">GOTV Jinja - ₦3,900</option>
-          <option value="gotv-max">GOTV Max - ₦8,500</option>
-          <option value="nova">Startimes Nova - ₦2,100</option>
-          <option value="classic">Startimes Classic - ₦6,000</option>
+          <option value="dstv-padi">DStv Padi</option>
+          <option value="dstv-yanga">DStv Yanga</option>
+          <option value="dstv-confam">DStv Confam</option>
+          <option value="gotv-jinja">GOtv Jinja</option>
+          <option value="gotv-jolli">GOtv Jolli</option>
+          <option value="nova">Startimes Nova</option>
         </select><br><br>
 
         <label>Phone Number:</label><br>
         <input type="text" id="phone" placeholder="Enter phone number" required /><br><br>
 
-        <button type="button" id="verifyBtn">🔍 Verify SmartCard</button>
+        <button type="button" id="verifyBtn">🔍 Verify Decoder</button>
         <button type="submit">📺 Subscribe</button>
       </form>
     </div>
@@ -60,7 +60,7 @@
   <script>
     const API_BASE = "https://dit-pay.onrender.com";
 
-    // Verify Smartcard
+    // ✅ Verify Decoder / Smartcard
     document.getElementById("verifyBtn").addEventListener("click", async () => {
       const decoder = document.getElementById("decoder").value.trim();
       const provider = document.getElementById("provider").value;
@@ -77,7 +77,10 @@
             "Content-Type": "application/json",
             "Authorization": "Bearer " + localStorage.getItem("token")
           },
-          body: JSON.stringify({ decoder, provider })
+          body: JSON.stringify({ 
+            cabletv: provider, 
+            smartcardno: decoder 
+          })
         });
 
         const data = await res.json();
@@ -92,9 +95,10 @@
       }
     });
 
-    // Buy TV Subscription
+    // ✅ Buy TV Subscription
     document.getElementById("tvForm").addEventListener("submit", async (e) => {
       e.preventDefault();
+
       const decoder = document.getElementById("decoder").value.trim();
       const provider = document.getElementById("provider").value;
       const packageName = document.getElementById("package").value;
@@ -112,17 +116,22 @@
             "Content-Type": "application/json",
             "Authorization": "Bearer " + localStorage.getItem("token")
           },
-          body: JSON.stringify({ decoder, provider, package: packageName, phone })
+          body: JSON.stringify({ 
+            cabletv: provider, 
+            package: packageName, 
+            smartcardno: decoder, 
+            phoneno: phone 
+          })
         });
 
         const data = await res.json();
         if (res.ok) {
-          alert("✅ " + data.message + `\nNew Balance: ₦${data.new_balance}`);
+          alert(data.message + `\nNew Balance: ₦${data.new_balance}`);
         } else {
-          alert("❌ Subscription failed: " + (data.message || "Try again"));
+          alert(data.message || "❌ TV subscription failed");
         }
       } catch (err) {
-        console.error("Error:", err);
+        console.error("❌ Error:", err);
         alert("Server error, try again later.");
       }
     });
