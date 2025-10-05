@@ -101,10 +101,10 @@
 
       const decoder = document.getElementById("decoder").value.trim();
       const provider = document.getElementById("provider").value;
-      const packageName = document.getElementById("package").value;
+      const packageCode = document.getElementById("package").value;
       const phone = document.getElementById("phone").value.trim();
 
-      if (!decoder || !provider || !packageName || !phone) {
+      if (!decoder || !provider || !packageCode || !phone) {
         alert("Please fill all fields.");
         return;
       }
@@ -118,9 +118,9 @@
           },
           body: JSON.stringify({ 
             cabletv: provider, 
-            package: packageName, 
-            smartcardno: decoder, 
-            phoneno: phone 
+            packageCode: packageCode,   // ✅ matches backend
+            smartcardno: decoder,       // ✅ matches backend
+            phone: phone                // ✅ matches backend
           })
         });
 
