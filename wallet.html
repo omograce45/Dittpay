@@ -5,8 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>DitPay - Wallet</title>
   <link rel="stylesheet" href="style.css" />
-  <!-- Paystack script -->
-  <script src="https://js.paystack.co/v1/inline.js"></script>
 </head>
 <body>
   <header>
@@ -25,8 +23,8 @@
       <p><strong>Balance:</strong> ₦<span id="balance">0.00</span></p>
 
       <!-- Buttons -->
-      <button onclick="fundWallet()">💳 Fund Wallet</button>
-      <button onclick="loadWallet()">🔄 Refresh Balance</button>
+      <button id="fundBtn">💳 Fund Wallet</button>
+      <button id="refreshBtn">🔄 Refresh Balance</button>
     </div>
   </main>
 
@@ -35,74 +33,89 @@
   </footer>
 
   <script>
-    const API_BASE = "https://dit-pay.onrender.com"; // Your backend URL
+    document.addEventListener("DOMContentLoaded", function () {
+      const API_BASE = "https://dit-pay.onrender.com"; // ✅ Your backend URL
+      const balanceEl = document.getElementById("balance");
+      const fundBtn = document.getElementById("fundBtn");
+      const refreshBtn = document.getElementById("refreshBtn");
 
-    // ✅ Load Wallet Balance
-    async function loadWallet() {
-      try {
-        const res = await fetch(`${API_BASE}/wallet`, {
-          headers: { "Authorization": "Bearer " + localStorage.getItem("token") }
-        });
-        const data = await res.json();
-        if (res.ok) {
-          document.getElementById("balance").innerText = data.balance;
-        } else {
-          alert(data.message || "Unable to fetch wallet balance.");
-        }
-      } catch (err) {
-        console.error("Error loading wallet:", err);
-        alert("Error loading wallet.");
-      }
-    }
-
-    // ✅ Fund Wallet via Paystack
-    function fundWallet() {
-      const amount = prompt("Enter amount to fund (₦):");
-      if (!amount || isNaN(amount) || amount <= 0) return alert("Enter a valid amount.");
-
-      if (typeof PaystackPop === "undefined") {
-        alert("Paystack script not loaded.");
-        return;
-      }
-
-      let handler = PaystackPop.setup({
-        key: "pk_live_a58e433c09f1575cb5d7517ccfed4eb3ce3aab7b", // Your Paystack Public Key
-        email: localStorage.getItem("userEmail") || "customer@example.com",
-        amount: parseFloat(amount) * 100, // Convert to kobo
-        currency: "NGN",
-        ref: "DITPAY-" + Date.now(),
-        callback: async function(response) {
-          try {
-            const verifyRes = await fetch(`${API_BASE}/wallet/fund`, {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-                "Authorization": "Bearer " + localStorage.getItem("token")
-              },
-              body: JSON.stringify({
-                amount: parseFloat(amount),
-                reference: response.reference
-              })
-            });
-
-            const verifyData = await verifyRes.json();
-            alert(verifyData.message || "Wallet funded successfully!");
-            if (verifyRes.ok) loadWallet();
-          } catch (err) {
-            console.error("Error verifying payment:", err);
-            alert("Error verifying payment.");
+      // ✅ Load wallet balance
+      async function loadWallet() {
+        try {
+          const res = await fetch(`${API_BASE}/wallet`, {
+            headers: {
+              "Authorization": "Bearer " + localStorage.getItem("token"),
+            },
+          });
+          const data = await res.json();
+          if (res.ok) {
+            balanceEl.innerText = parseFloat(data.balance || 0).toFixed(2);
+          } else {
+            alert(data.message || "Unable to fetch wallet balance.");
           }
-        },
-        onClose: function() {
-          alert("Transaction cancelled.");
+        } catch (err) {
+          console.error("Error loading wallet:", err);
+          alert("Error loading wallet.");
         }
-      });
+      }
 
-      handler.openIframe();
-    }
+      // ✅ Fund wallet using Paystack
+      function fundWallet() {
+        const amount = prompt("Enter amount to fund (₦):");
+        if (!amount || isNaN(amount) || amount <= 0)
+          return alert("Enter a valid amount.");
 
-    // Load wallet balance on page load
-    loadWallet();
+        if (typeof PaystackPop === "undefined") {
+          alert("⚠️ Paystack script not loaded. Please refresh the page.");
+          return;
+        }
+
+        const handler = PaystackPop.setup({
+          key: "pk_live_a58e433c09f1575cb5d7517ccfed4eb3ce3aab7b", // ✅ Your Paystack public key
+          email: localStorage.getItem("userEmail") || "customer@example.com",
+          amount: parseFloat(amount) * 100, // in kobo
+          currency: "NGN",
+          ref: "DITPAY-" + Date.now(),
+          callback: async function (response) {
+            try {
+              const verifyRes = await fetch(`${API_BASE}/wallet/fund`, {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: "Bearer " + localStorage.getItem("token"),
+                },
+                body: JSON.stringify({
+                  amount: parseFloat(amount),
+                  reference: response.reference,
+                }),
+              });
+
+              const verifyData = await verifyRes.json();
+              alert(verifyData.message || "Wallet funded successfully!");
+              if (verifyRes.ok) loadWallet();
+            } catch (err) {
+              console.error("Error verifying payment:", err);
+              alert("Error verifying payment.");
+            }
+          },
+          onClose: function () {
+            alert("Transaction cancelled.");
+          },
+        });
+
+        handler.openIframe();
+      }
+
+      // ✅ Event listeners
+      fundBtn.addEventListener("click", fundWallet);
+      refreshBtn.addEventListener("click", loadWallet);
+
+      // ✅ Load balance on startup
+      loadWallet();
+    });
   </script>
+
+  <!-- ✅ Load Paystack script at the very end -->
+  <script src="https://js.paystack.co/v1/inline.js"></script>
 </body>
 </html>
