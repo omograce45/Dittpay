@@ -78,7 +78,7 @@
 
     // ✅ Verify Meter Function
     async function verifyMeter() {
-      const meter = document.getElementById("meterNo").value.trim();
+      const meterNo = document.getElementById("meterNo").value.trim();
       const disco = document.getElementById("disco").value;
       const meterType = document.getElementById("meterType").value;
 
@@ -112,7 +112,7 @@
     document.getElementById("electricityForm").addEventListener("submit", async (e) => {
       e.preventDefault();
 
-      const meter = document.getElementById("meterNo").value.trim();
+      const meterNo = document.getElementById("meterNo").value.trim();
       const disco = document.getElementById("disco").value;
       const meterType = document.getElementById("meterType").value;
       const phone = document.getElementById("phone").value.trim();
