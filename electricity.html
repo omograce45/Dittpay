@@ -80,9 +80,8 @@
     async function verifyMeter() {
       const meterNo = document.getElementById("meter").value.trim();
       const disco = document.getElementById("disco").value;
-      const meterType = document.getElementById("meterType").value;
 
-      if (!meter || !disco || !meterType) {
+      if (!meter || !disco ) {
         alert("⚠️ Fill all fields before verifying.");
         return;
       }
