@@ -93,7 +93,7 @@
             "Content-Type": "application/json",
             "Authorization": "Bearer " + localStorage.getItem("token")
           },
-          body: JSON.stringify({ meter, disco, meterType })
+          body: JSON.stringify({ meter, disco })
         });
         const data = await res.json();
 
