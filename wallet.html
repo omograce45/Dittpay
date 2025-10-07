@@ -75,7 +75,7 @@
         ref: "DITPAY-" + Date.now(),
         callback: async function(response) {
           try {
-            const res = await fetch(`${API_BASE}/wallet/fund`, {
+            const res = await fetch(`${API_BASE}/wallet/fundWallet`, {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
