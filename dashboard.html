@@ -160,7 +160,7 @@
   <!-- Main content wrapper -->
   <main class="content">
     <div class="welcome">
-      <h2>Welcome, Grace 👋</h2>
+      <h2 id="welcomeText">Welcome 👋</h2>
       <p>Choose a service below to get started</p>
     </div>
 
@@ -192,15 +192,30 @@
     <p>&copy; 2025 DitPay. All Rights Reserved.</p>
   </footer>
 
-  <!-- Loader Script -->
+  <!-- Loader + Name Script -->
   <script>
-    window.addEventListener("load", () => {
+    window.addEventListener("load", async () => {
       const loader = document.getElementById("loader");
       document.body.classList.add("loaded");
       loader.classList.add("fade-out");
-      setTimeout(() => {
-        loader.style.display = "none";
-      }, 800);
+      setTimeout(() => loader.style.display = "none", 800);
+
+      // ✅ Fetch user's name and show only the first name
+      const token = localStorage.getItem("token");
+      if (!token) return;
+
+      try {
+        const res = await fetch("https://dit-pay.onrender.com/profile", {
+          headers: { "Authorization": "Bearer " + token }
+        });
+        if (res.ok) {
+          const user = await res.json();
+          const firstName = user.fullname.split(" ")[0]; // take first word
+          document.getElementById("welcomeText").textContent = `Welcome, ${firstName} 👋`;
+        }
+      } catch (err) {
+        console.error("❌ Error loading user:", err);
+      }
     });
   </script>
 </body>
