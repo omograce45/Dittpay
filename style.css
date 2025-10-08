@@ -180,3 +180,13 @@ footer {
     font-size: 14px;
   }
     }
+
+/* Prevent horizontal scroll / right gap */
+html, body {
+  overflow-x: hidden;
+}
+
+/* Ensure everything fits properly */
+* {
+  box-sizing: border-box;
+  }
