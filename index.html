@@ -203,19 +203,41 @@
     }
 
     /* WhatsApp floating button */
-    .whatsapp-btn {
+    .whatsapp-container {
       position: fixed; bottom: 20px; right: 20px;
+      z-index: 1001;
+      text-align: right;
+    }
+    .whatsapp-btn {
       background: #20c997; color: white;
       border-radius: 50%; width: 60px; height: 60px;
       display: flex; justify-content: center; align-items: center;
       font-size: 28px; text-decoration: none; box-shadow: 0 2px 5px rgba(0,0,0,0.3);
       animation: pulse 1.5s infinite;
-      z-index: 1001;
+      cursor: pointer;
     }
     @keyframes pulse {
       0% { transform: scale(1); }
       50% { transform: scale(1.1); }
       100% { transform: scale(1); }
+    }
+    #whatsapp-options {
+      display: none;
+      margin-top: 10px;
+      background: #fff;
+      border-radius: 6px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+      padding: 10px;
+    }
+    #whatsapp-options a {
+      display: block;
+      color: #20c997;
+      font-weight: bold;
+      margin-bottom: 5px;
+      text-decoration: none;
+    }
+    #whatsapp-options a:hover {
+      text-decoration: underline;
     }
 
     @media(max-width:768px){
@@ -330,10 +352,17 @@
     <p>&copy; 2025 DITPAY. All Rights Reserved.</p>
   </footer>
 
-  <!-- WhatsApp Floating Button -->
-  <a href="https://wa.me/2347012699982" class="whatsapp-btn" target="_blank">
-    <i class="fab fa-whatsapp"></i>
-  </a>
+  <!-- WhatsApp Floating Button with Multiple Numbers -->
+  <div class="whatsapp-container">
+    <a href="https://wa.me/2347012699982" class="whatsapp-btn" target="_blank">
+      <i class="fab fa-whatsapp"></i>
+    </a>
+    <div id="whatsapp-options">
+      <a href="https://wa.me/2347012699982" target="_blank">+2347012699982</a>
+      <a href="https://wa.me/2348012345678" target="_blank">+2348012345678</a>
+      <a href="https://wa.me/2348098765432" target="_blank">+2348098765432</a>
+    </div>
+  </div>
 
   <!-- Script -->
   <script>
@@ -361,6 +390,22 @@
         icon.classList.toggle("fa-chevron-up");
       });
     });
+
+    // WhatsApp button toggle for multiple numbers
+    const whatsappBtn = document.querySelector('.whatsapp-btn');
+    const whatsappOptions = document.getElementById('whatsapp-options');
+
+    whatsappBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      whatsappOptions.style.display = whatsappOptions.style.display === 'block' ? 'none' : 'block';
+    });
+
+    // Click outside to close
+    document.addEventListener('click', function(event) {
+      if (!whatsappBtn.contains(event.target) && !whatsappOptions.contains(event.target)) {
+        whatsappOptions.style.display = 'none';
+      }
+    });
   </script>
 </body>
-  </html>
+</html>
