@@ -12,7 +12,7 @@
     <nav>
       <a href="dashboard.html">Home</a>
       <a href="wallet.html">Wallet</a>
-      <a href="transactions.html">Transactions</a>
+      <a href="transactions.html" class="active">Transactions</a>
       <a href="profile.html">Profile</a>
     </nav>
   </header>
@@ -25,7 +25,7 @@
           <tr>
             <th>ID</th>
             <th>Type</th>
-            <th>Amount</th>
+            <th>Amount (₦)</th>
             <th>Status</th>
             <th>Date</th>
           </tr>
@@ -35,7 +35,7 @@
         </tbody>
       </table>
 
-      <h3>Add New Transaction</h3>
+      <h3 style="margin-top:20px;">Add New Transaction (Test Only)</h3>
       <form id="transactionForm">
         <label for="type">Type:</label>
         <select id="type" required>
@@ -56,10 +56,7 @@
   </footer>
 
   <script>
-    function logout() {
-      localStorage.removeItem("token");
-      window.location.href = "index.html";
-    }
+    const API_BASE = "https://dit-pay.onrender.com"; // Your backend API base
 
     async function loadTransactions() {
       const token = localStorage.getItem("token");
@@ -70,47 +67,50 @@
       }
 
       try {
-        const res = await fetch("https://dit-pay.onrender.com/transactions", {
+        const res = await fetch(`${API_BASE}/transactions`, {
           headers: { "Authorization": "Bearer " + token }
         });
+        const data = await res.json();
 
         const list = document.getElementById("transactionList");
         list.innerHTML = "";
 
-        if (res.ok) {
-          const data = await res.json();
-          if (data.length === 0) {
-            list.innerHTML = "<tr><td colspan='5' style='text-align:center;'>No transactions found.</td></tr>";
-          } else {
-            data.forEach(tx => {
-              list.innerHTML += `
-                <tr>
-                  <td>${tx.id}</td>
-                  <td>${tx.type}</td>
-                  <td>${tx.amount.toFixed(2)}</td>
-                  <td>${tx.status}</td>
-                  <td>${new Date(tx.created_at).toLocaleString()}</td>
-                </tr>
-              `;
-            });
-          }
-        } else {
-          list.innerHTML = "<tr><td colspan='5' style='text-align:center;'>Failed to load transactions</td></tr>";
+        if (!res.ok || !data.length) {
+          list.innerHTML = "<tr><td colspan='5' style='text-align:center;'>No transactions found.</td></tr>";
+          return;
         }
+
+        data.forEach(tx => {
+          list.innerHTML += `
+            <tr>
+              <td>${tx.id}</td>
+              <td>${tx.type}</td>
+              <td>₦${Number(tx.amount).toFixed(2)}</td>
+              <td>${tx.status}</td>
+              <td>${new Date(tx.created_at).toLocaleString()}</td>
+            </tr>
+          `;
+        });
       } catch (err) {
         console.error("Error loading transactions:", err);
         alert("Error loading transactions.");
       }
     }
 
+    // ✅ Add a new transaction (for testing only)
     document.getElementById("transactionForm").addEventListener("submit", async (e) => {
       e.preventDefault();
       const token = localStorage.getItem("token");
       const type = document.getElementById("type").value;
       const amount = parseFloat(document.getElementById("amount").value);
 
+      if (!token) {
+        alert("Please log in first.");
+        return;
+      }
+
       try {
-        const res = await fetch("https://dit-pay.onrender.com/transactions", {
+        const res = await fetch(`${API_BASE}/transactions`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -121,19 +121,18 @@
 
         const data = await res.json();
         alert(data.message);
-
         if (res.ok) {
           document.getElementById("transactionForm").reset();
           loadTransactions();
         }
       } catch (err) {
-        console.error(err);
-        alert("Error creating transaction.");
+        console.error("Error adding transaction:", err);
+        alert("Error adding transaction.");
       }
     });
 
-    // Load transactions on page load
+    // Load on page load
     loadTransactions();
   </script>
 </body>
-    </html>
+</html>
