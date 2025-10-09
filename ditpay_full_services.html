@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DitPay - Services</title>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #f4f8ff;
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+    header {
+      background-color: #0066cc;
+      color: white;
+      padding: 1rem 2rem;
+      text-align: center;
+    }
+    h1 span {
+      color: #00ccff;
+    }
+    .container {
+      max-width: 1100px;
+      margin: 2rem auto;
+      background: white;
+      border-radius: 15px;
+      padding: 2rem;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    h2 {
+      color: #0066cc;
+      border-bottom: 2px solid #00ccff;
+      padding-bottom: 0.5rem;
+    }
+    .service-section {
+      margin-bottom: 2rem;
+    }
+    .plans {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 1.5rem;
+      margin-top: 1rem;
+    }
+    .card {
+      background: #f9fbff;
+      border: 1px solid #d9e6ff;
+      border-radius: 10px;
+      padding: 1rem;
+      text-align: center;
+      transition: all 0.3s ease;
+    }
+    .card:hover {
+      background: #e6f2ff;
+      transform: translateY(-3px);
+    }
+    .price {
+      color: #0066cc;
+      font-weight: bold;
+      margin-top: 0.5rem;
+    }
+    button {
+      background-color: #0066cc;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 0.6rem 1.2rem;
+      cursor: pointer;
+      margin-top: 0.5rem;
+      transition: background 0.3s;
+    }
+    button:hover {
+      background-color: #004c99;
+    }
+    footer {
+      text-align: center;
+      background-color: #0066cc;
+      color: white;
+      padding: 1rem;
+      margin-top: 3rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1><span>DitPay</span> Services</h1>
+    <p>Buy Airtime • Data • TV Subscription • Electricity Bills</p>
+  </header>
+
+  <div class="container">
+    <div class="service-section">
+      <h2>💳 Airtime</h2>
+      <div class="plans">
+        <div class="card">
+          <h3>MTN Airtime</h3>
+          <p>Instant Top-up for all networks</p>
+          <p class="price">₦100 - ₦50,000</p>
+          <button>Buy Now</button>
+        </div>
+        <div class="card">
+          <h3>GLO Airtime</h3>
+          <p>Recharge seamlessly and enjoy bonuses</p>
+          <p class="price">₦100 - ₦50,000</p>
+          <button>Buy Now</button>
+        </div>
+        <div class="card">
+          <h3>Airtel Airtime</h3>
+          <p>Fast and reliable top-ups</p>
+          <p class="price">₦100 - ₦50,000</p>
+          <button>Buy Now</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="service-section">
+      <h2>📱 Data Bundles</h2>
+      <div class="plans">
+        <div class="card">
+          <h3>MTN SME Data</h3>
+          <p>200MB for ₦98 • 1GB for ₦483.91</p>
+          <p class="price">Cheap & Reliable</p>
+          <button>Buy Data</button>
+        </div>
+        <div class="card">
+          <h3>Airtel Awoof Data</h3>
+          <p>1GB - ₦483.91 • 3GB - ₦967.91</p>
+          <p class="price">Affordable Plans</p>
+          <button>Buy Data</button>
+        </div>
+        <div class="card">
+          <h3>GLO Data</h3>
+          <p>1.8GB for ₦500 • 3.6GB for ₦1000</p>
+          <p class="price">Bonus Inclusive</p>
+          <button>Buy Data</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="service-section">
+      <h2>📺 TV Subscription</h2>
+      <div class="plans">
+        <div class="card">
+          <h3>DSTV</h3>
+          <p>Padi - ₦4,400 • Yanga - ₦6,000 • Confam - ₦11,000</p>
+          <p class="price">Instant Activation</p>
+          <button>Subscribe</button>
+        </div>
+        <div class="card">
+          <h3>GOTV</h3>
+          <p>Jinja - ₦3,900 • Jolli - ₦5,800 • Supa - ₦11,400</p>
+          <p class="price">Fast Subscription</p>
+          <button>Subscribe</button>
+        </div>
+        <div class="card">
+          <h3>Startimes</h3>
+          <p>Nova - ₦2,100 • Classic - ₦6,000 • Super - ₦9,800</p>
+          <p class="price">Affordable Rates</p>
+          <button>Subscribe</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="service-section">
+      <h2>💡 Electricity Bills</h2>
+      <div class="plans">
+        <div class="card">
+          <h3>BEDC</h3>
+          <p>Pay for prepaid and postpaid meters</p>
+          <p class="price">₦100 - ₦200,000</p>
+          <button>Pay Bill</button>
+        </div>
+        <div class="card">
+          <h3>EKEDC</h3>
+          <p>Reliable and instant token delivery</p>
+          <p class="price">₦100 - ₦200,000</p>
+          <button>Pay Bill</button>
+        </div>
+        <div class="card">
+          <h3>IBEDC</h3>
+          <p>Easy recharge for electricity users</p>
+          <p class="price">₦100 - ₦200,000</p>
+          <button>Pay Bill</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p>&copy; 2025 DitPay. All Rights Reserved.</p>
+  </footer>
+</body>
+</html>
