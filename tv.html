@@ -36,12 +36,6 @@
         <label>Package:</label><br>
         <select id="package" required>
           <option value="">-- Choose Package --</option>
-          <option value="dstv33">DStv</option>
-          <option value="dstv-yanga">DStv Yanga</option>
-          <option value="dstv-confam">DStv Confam</option>
-          <option value="gotv-jinja">GOtv Jinja</option>
-          <option value="gotv-jolli">GOtv Jolli</option>
-          <option value="nova">Startimes Nova</option>
         </select><br><br>
 
         <label>Phone Number:</label><br>
@@ -59,6 +53,51 @@
 
   <script>
     const API_BASE = "https://dit-pay.onrender.com";
+
+    // ✅ TV Packages Data
+    const packages = {
+      dstv: [
+        { value: "dstv-padi", text: "DStv Padi - ₦2,150" },
+        { value: "dstv-yanga", text: "DStv Yanga - ₦2,950" },
+        { value: "dstv-confam", text: "DStv Confam - ₦5,300" },
+        { value: "dstv-compact", text: "DStv Compact - ₦9,000" },
+        { value: "dstv-compact-plus", text: "DStv Compact Plus - ₦14,250" },
+        { value: "dstv-premium", text: "DStv Premium - ₦21,000" }
+      ],
+      gotv: [
+        { value: "gotv-smallie", text: "GOtv Smallie - ₦1,300" },
+        { value: "gotv-jinja", text: "GOtv Jinja - ₦2,250" },
+        { value: "gotv-jolli", text: "GOtv Jolli - ₦3,300" },
+        { value: "gotv-max", text: "GOtv Max - ₦4,850" },
+        { value: "gotv-supa", text: "GOtv Supa - ₦6,500" },
+        { value: "gotv-supa-plus", text: "GOtv Supa Plus - ₦7,600" }
+      ],
+      startimes: [
+        { value: "nova", text: "Startimes Nova - ₦1,200" },
+        { value: "basic", text: "Startimes Basic - ₦2,000" },
+        { value: "smart", text: "Startimes Smart - ₦2,600" },
+        { value: "classic", text: "Startimes Classic - ₦3,800" },
+        { value: "super", text: "Startimes Super - ₦6,500" }
+      ]
+    };
+
+    // ✅ Update package options when provider changes
+    document.getElementById("provider").addEventListener("change", (e) => {
+      const provider = e.target.value;
+      const packageSelect = document.getElementById("package");
+
+      // Clear previous options
+      packageSelect.innerHTML = '<option value="">-- Choose Package --</option>';
+
+      if (packages[provider]) {
+        packages[provider].forEach(pkg => {
+          const opt = document.createElement("option");
+          opt.value = pkg.value;
+          opt.textContent = pkg.text;
+          packageSelect.appendChild(opt);
+        });
+      }
+    });
 
     // ✅ Verify Decoder / Smartcard
     document.getElementById("verifyBtn").addEventListener("click", async () => {
@@ -118,9 +157,9 @@
           },
           body: JSON.stringify({ 
             cabletv: provider, 
-            packageCode: packageCode,   // ✅ matches backend
-            smartcardno: decoder,       // ✅ matches backend
-            phone: phone                // ✅ matches backend
+            packageCode: packageCode,
+            smartcardno: decoder,
+            phone: phone
           })
         });
 
