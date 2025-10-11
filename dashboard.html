@@ -89,6 +89,28 @@
       text-decoration: underline;
     }
 
+    /* === Scrolling Notice === */
+    .marquee {
+      width: 100%;
+      overflow: hidden;
+      white-space: nowrap;
+      box-sizing: border-box;
+      background: #ffcc00;
+      color: #000;
+      padding: 10px;
+      font-size: 16px;
+      font-weight: 600;
+    }
+    .marquee p {
+      display: inline-block;
+      padding-left: 100%;
+      animation: scroll 12s linear infinite;
+    }
+    @keyframes scroll {
+      0%   { transform: translateX(0); }
+      100% { transform: translateX(-100%); }
+    }
+
     .content {
       padding: 20px;
     }
@@ -156,6 +178,11 @@
       <a href="index.html">Logout</a>
     </nav>
   </header>
+
+  <!-- 🔔 Scrolling Notification -->
+  <div class="marquee">
+    <p>⚠️ Notice: Dear valued agent, the electricity service is currently unavailable. We’ll notify you once it’s restored. Thank you for your patience.</p>
+  </div>
 
   <!-- Main content wrapper -->
   <main class="content">
